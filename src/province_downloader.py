@@ -1,4 +1,5 @@
 import datetime
+import os
 
 import requests
 from progress.bar import Bar
@@ -23,9 +24,9 @@ def download_file(file_date):
     if r.status_code != 404:
         with open("province/province-" + file_date + '.csv', 'wb') as f:
             f.write(r.content)
+            return True
     else:
-        pass
-        # print("Errore durante il download dei dati del: ", file_date)
+        return False
 
 
 def download_all_files():
@@ -37,7 +38,13 @@ def download_all_files():
 
 
 def check_files():
-    pass
+    downloaded = 0
+    for date in date_list:
+        if not os.path.isfile('province/province-' + date + '.csv'):
+            if download_file(date):
+                print(date)
+                downloaded += 1
+    print("scaricati:, " ,downloaded, "file")
 
 
-download_all_files()
+check_files()
