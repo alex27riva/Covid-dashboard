@@ -14,8 +14,6 @@ url_storico_nazionale = 'https://raw.githubusercontent.com/pcm-dpc/COVID-19/mast
 url_regioni = 'https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-regioni/dpc-covid19-ita-regioni.csv'
 url_province = 'https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-province/dpc-covid19-ita-province-' + '20200224' + '.csv'
 
-# progress bar
-bar_max_value = 100
 
 # method to make lists of the names of regions and provinces
 def getNames(url, denominazione):
@@ -36,7 +34,6 @@ datanumpy = np.array([])
 allRegion = getNames(url_regioni, 'denominazione_regione')
 allProvince = getNames(url_province, 'denominazione_provincia')
 allProvince = np.delete(allProvince, 4)  # 4 is the index of 'In fase di definizione/aggiornamento'
-# print('\r|O         |')
 
 # time data
 today = datetime.date.today()  # get current day
@@ -45,7 +42,6 @@ n = (today - datetime.date(2020, 2, 22)).days  # number of days from today to th
 startDate = ''  # first day in the .cvs file
 lastDate = ''  # last day in the .cvs file
 np.date = []  # list of dates
-# print('\r|OO        |')
 
 
 def getDate(count):
@@ -63,7 +59,6 @@ else:
 for i in range(c, n - 1):  # c, n-1
     np.date.append(getDate(i))
 np.date = np.date[::-1]
-# print('\r|OOO       |')
 
 count_makeFile = 1
 
@@ -158,8 +153,6 @@ def regioneDaily(region):
     main_df = main_df.append(paste_df, ignore_index=True)
 
 
-# print('\r|OOOO      |')
-
 # # #   P R O V I N C E   # # #
 # main province dataframe
 p_df_all = pandas.read_csv(url_province, index_col=['denominazione_provincia'], usecols=['denominazione_provincia'])
@@ -171,7 +164,6 @@ p_df_all.index = p_df_all.index.str.replace("-", '')  # remove dashes
 
 
 def get_p_df_all():
-    print("Numero di giorni: ", len(np.date))
     bar = Bar('Processing', max=len(np.date))
     for date in np.date:
         global p_df_all
@@ -190,7 +182,6 @@ def get_p_df_all():
 
 
 get_p_df_all()
-# print('\r|OOOOO     |')
 
 
 # provinces .csv files don't have a daily cases column,
@@ -199,7 +190,6 @@ get_p_df_all()
 # _minus_
 # total cases of the day before _minus_ total case of the day before yesterday
 
-# sub = 0
 def totalToDaily(list, prov):
     sub = 0  # total cases of the day before _minus_ total case of the day before yesterday --- starts at 0
     start = 0  # total cases of the day before
@@ -242,19 +232,16 @@ def provinciaDaily(prov):
     arrayDaily.append(daily)
 
 
-# print('\r|OOOOOO    |')
 
 
 def changeDir():
     wk = pathlib.Path.home() / "_R0tdata"
-    print(wk)
     # if sys.platform == "win32":
     #    wk = pathlib.Path.home() / "Documents" / "_R0tdata"
     wk = os.path.abspath(os.path.realpath(wk))
     if not os.path.isdir(wk):
         os.mkdir(wk)
     os.chdir(wk)
-    print(wk)
 
 
 changeDir()  # change working directory
@@ -268,14 +255,11 @@ for name in allRegion:
 for name in allProvince:
     f.write(name + '\n')
 f.close()
-# print('\r|OOOOOOO   |')
 
 nazione_daily()  # funzione che salva il file aggiornato - nazionale
-# print('\r|OOOOOOOO  |')
 
 for x in allRegion:  # funzione che salva il file aggiornato - regionale
     regioneDaily(x)
-# print('\r|OOOOOOOOO |')
 
 for x in allProvince:  # funzione che salva il file aggiornato - provinciale
     provinciaDaily(x)
@@ -285,7 +269,6 @@ prov_df = pandas.DataFrame(arrayDaily)  # create dataframe out of numpy
 main_df = main_df.append(prov_df)  # add new provinces dataframe to main dataframe
 main_df.to_csv('_dataframe', index=False, encoding='UTF-8')  # create .csv 
 
-# print('| - DONE - |\n')
 
 # elapsed time check
 t1_stop = datetime.datetime.now()
