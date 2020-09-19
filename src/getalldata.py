@@ -17,7 +17,6 @@ url_province = 'https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-p
 
 # method to make lists of the names of regions and provinces
 def getNames(url, denominazione):
-    dflist = []
     df = pandas.read_csv(url)
     df = df.drop_duplicates(subset=[denominazione])
     dflist = df[denominazione].tolist()
@@ -35,6 +34,7 @@ allRegion = getNames(url_regioni, 'denominazione_regione')
 allProvince = getNames(url_province, 'denominazione_provincia')
 allProvince = np.delete(allProvince, 4)  # 4 is the index of 'In fase di definizione/aggiornamento'
 
+print(allProvince)
 # time data
 today = datetime.date.today()  # get current day
 currentTime = time.localtime().tm_hour  # get current hour
