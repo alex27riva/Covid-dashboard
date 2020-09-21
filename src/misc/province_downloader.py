@@ -44,7 +44,7 @@ def check_files():
             if download_file(date):
                 print(date)
                 downloaded += 1
-    print("scaricati:, " ,downloaded, "file")
+    print("scaricati:, ", downloaded, "file")
 
-
-check_files()
+download_all_files()
+# check_files()
