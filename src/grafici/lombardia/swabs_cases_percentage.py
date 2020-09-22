@@ -7,6 +7,10 @@ dataset = '../../../dataset/lombardia.csv'
 df = pd.read_csv(dataset, index_col=[], usecols=['data', 'new_cases_test_percentage', 'positive_swabs_percentage'])
 df = df[65:]
 
+# rolling average 3gg
+df['new_cases_rolling'] = df['new_cases_test_percentage'].rolling(3).mean()
+df['total_cases_rolling'] = df['positive_swabs_percentage'].rolling(3).mean()
+
 fig = go.Figure()
 
 fig.add_trace(
@@ -20,6 +24,12 @@ fig.add_trace(
                name='Total cases tested',
                line=dict(color='blue', width=4))
 )
+
+fig.add_trace(go.Scatter(x=df['data'], y=df['new_cases_rolling'], name='New cases (3 day average)',
+                         line=dict(color='orange', width=4, dash='dot')))
+
+fig.add_trace(go.Scatter(x=df['data'], y=df['total_cases_rolling'], name='New cases (3 day average)',
+                         line=dict(color='blue', width=4, dash='dot')))
 
 # Add title
 fig.update_layout(
