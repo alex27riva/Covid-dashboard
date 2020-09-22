@@ -1,4 +1,4 @@
-data,cases,delta_cases,avg_3gg,delta_contagi_prot,ew_cases_normalized,swabs_rl,positive_swabs_percentage,new_cases,new_cases_test_percentage,cumulative_cases_screening,daily_cases_screening,var_percentage
+data,cases,delta_cases,avg_3gg,delta_contagi_prot,new_cases_normalized,swabs_rl,positive_swabs_percentage,new_cases,new_cases_test_percentage,cumulative_cases_screening,daily_cases_screening,var_percentage
 20-feb-20,3,3,,,,,,,,,,
 21-feb-20,35,32,,,,,,,,,,
 22-feb-20,71,36,,,,,,,,,,
