@@ -10,7 +10,7 @@ y_name = 'delta_hospitalized'
 
 df = pd.read_csv(dataset, index_col=[], usecols=[x_name, y_name])
 # trim lines (missing data)
-#df = df[136:]
+# df = df[136:]
 
 fig = go.Figure(
     go.Bar(x=df[x_name], y=df[y_name],
