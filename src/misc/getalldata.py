@@ -89,7 +89,8 @@ def makeFile(data, zone):
 national_df = pandas.read_csv(url_storico_nazionale, index_col=[], usecols=['data', 'nuovi_positivi'])
 dates = national_df['data']
 national = national_df['nuovi_positivi']
-main_df = pandas.DataFrame()  # data frame which will have index = zone names, columns = dates, data = number of new cases per day for each zone
+main_df = pandas.DataFrame()  # data frame which will have index = zone names, columns = dates, data = number of new
+# cases per day for each zone
 main_df = main_df.append(national)
 
 
