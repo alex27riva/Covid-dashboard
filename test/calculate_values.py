@@ -1,7 +1,7 @@
 """ This file read italy json data and calculate some other values"""
 import json
 
-path = '../../dataset/italy.json'
+path = '../dataset/italy.json'
 
 # list of dict for output data
 timestamp_list = []
@@ -28,7 +28,9 @@ def calc_mortality():
 
 def calc_new_cases():
     for i, day in enumerate(italy_data):
-        if i > 0:
+        if i == 0:
+            day['calculated_daily_new_cases'] = day['totale_casi']
+        else:
             day['calculated_daily_new_cases'] = day['totale_casi'] - italy_data[i - 1]['totale_casi']
 
 
@@ -45,6 +47,10 @@ def calc_daily_death():
             day['calculated_daily_deaths'] = day['deceduti']
         else:
             day['calculated_daily_deaths'] = day['deceduti'] - italy_data[i - 1]['deceduti']
+
+
+def calc_normalized_tests():
+    pass
 
 
 calc_mortality()
