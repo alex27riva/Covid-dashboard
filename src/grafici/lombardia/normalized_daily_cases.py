@@ -1,8 +1,14 @@
 #!/usr/bin/python3
 import pandas as pd
 import plotly.graph_objects as go
+"""
+Title: Normalizzed new daily cases in Regione Lombardia
+Description: This chart shows a bar chart of normalized new cases in Lombardia
+"""
 
 dataset = '../../../dataset/lombardia.csv'
+# chart title
+chart_title = "Normalized new daily cases in Regione Lombardia"
 
 # column names
 x_name = 'data'
@@ -18,7 +24,7 @@ fig = go.Figure(
 )
 # Add title
 fig.update_layout(
-    title_text="Normalized new daily cases RL"
+    title_text=chart_title
 )
 # set x axis name
 fig.update_xaxes(title_text="Giorni")

@@ -1,9 +1,16 @@
 #!/usr/bin/python3
 import pandas as pd
 import plotly.graph_objects as go
+"""
+Title: % New Cases / Swab Tests in Regione Lombardia
+Description: This chart shows the percentahe of new cases and total cases in Lombardia
+"""
+
+dataset = '../../../dataset/lombardia.csv'
+# chart title
+chart_title = "% New Cases / Swab Tests in Regione Lombardia"
 
 line_width = 2
-dataset = '../../../dataset/lombardia.csv'
 
 # column names
 x_name = 'data'
@@ -44,7 +51,7 @@ fig.add_trace(go.Scatter(x=df[x_name], y=df[total_cases_rolling], name='Total ca
 
 # Add title
 fig.update_layout(
-    title_text="% New Cases / Swab Tests in Regione Lombardia"
+    title_text=chart_title
 )
 # set x axis name
 fig.update_xaxes(title_text="Giorni")

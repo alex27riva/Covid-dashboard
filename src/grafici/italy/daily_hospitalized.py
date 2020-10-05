@@ -1,8 +1,15 @@
 #!/usr/bin/python3
 import pandas as pd
 import plotly.graph_objects as go
+"""
+Title: Hospitalized daily (with symptoms and ICU)
+Description: This chart shows a bar chart with daily total hospitalized patients in Italy
+"""
 
 dataset = '../../../dataset/italy.csv'
+
+# chart title
+chart_title = "Hospitalized daily (with symptoms and ICU)"
 
 # column names
 x_name = 'date'
@@ -18,7 +25,7 @@ fig = go.Figure(
 )
 # Add title
 fig.update_layout(
-    title_text="Hospitalized daily (with symptoms and ICU)"
+    title_text=chart_title
 )
 # set x axis name
 fig.update_xaxes(title_text="Giorni")

@@ -1,8 +1,15 @@
 #!/usr/bin/python3
 import pandas as pd
 import plotly.graph_objects as go
+"""
+Title: Fatality Rate percentage
+Description: This chart shows a scatter chart of fatality rate percentage in Italy
+"""
 
 dataset = '../../../dataset/italy_us.csv'
+
+# chart title
+chart_title = "Fatality Rate (%) COVID-19 ITA"
 
 # column names
 x_name = 'date'
@@ -19,7 +26,7 @@ fig = go.Figure(
 
 # Add title
 fig.update_layout(
-    title_text="Fatality Rate (%) COVID-19 ITA"
+    title_text=chart_title
 )
 # set x axis name
 fig.update_xaxes(title_text="Days")

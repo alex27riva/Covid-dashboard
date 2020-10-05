@@ -1,8 +1,15 @@
 #!/usr/bin/python3
 import pandas as pd
 import plotly.graph_objects as go
+"""
+Title: ICU Cumulative
+Description: This chart shows a bar chart with total ICU patients and 7 day moving average in Italy
+"""
 
 dataset = '../../../dataset/dpc-covid19-ita-andamento-nazionale.csv'
+
+# chart title
+chart_title = "ICU Cumulative"
 
 # column names
 x_name = 'data'
@@ -16,7 +23,7 @@ df[y_moving_7gg] = df[y_name].rolling(7).mean()
 
 fig = go.Figure(
     go.Bar(x=df[x_name], y=df[y_name],
-           name='TI patients')
+           name='ICU patients')
 )
 
 fig.add_trace(
@@ -28,7 +35,7 @@ fig.add_trace(
 )
 # Add title
 fig.update_layout(
-    title_text="TI Cumulative"
+    title_text=chart_title
 )
 # set x axis name
 fig.update_xaxes(title_text="Days")

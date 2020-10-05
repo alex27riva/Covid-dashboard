@@ -1,6 +1,10 @@
 #!/usr/bin/python3
 import pandas as pd
 import plotly.graph_objects as go
+"""
+Title: Slider test
+Description: This is a test for the date range slider selector
+"""
 
 dataset = '../dataset/lombardia_us_date.csv'
 

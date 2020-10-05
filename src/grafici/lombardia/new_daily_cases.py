@@ -1,8 +1,15 @@
 #!/usr/bin/python3
 import pandas as pd
 import plotly.graph_objects as go
+"""
+Title: Andamento dei contagi in Lombardia
+Description: This chart shows new cases and 7 day moving average in Lombardia
+"""
 
 dataset = '../../../dataset/lombardia.csv'
+
+# chart title
+chart_title = "Andamento dei contagi Lombardia"
 
 # column names
 x_name = 'data'
@@ -27,7 +34,7 @@ fig.add_trace(
 )
 # Add title
 fig.update_layout(
-    title_text="Andamento dei contagi Lombardia"
+    title_text=chart_title
 )
 # set x axis name
 fig.update_xaxes(title_text="Giorni")
