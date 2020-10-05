@@ -2,7 +2,7 @@
 import pandas as pd
 import plotly.graph_objects as go
 
-dataset = '../../../dataset/italy.csv'
+dataset = '../../../dataset/italy_us.csv'
 
 # column names
 x_name = 'date'

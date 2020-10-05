@@ -1,4 +1,5 @@
-class DeriveValues:
+class Util:
+    """This class is usedto derive more data"""
     def __init__(self):
         pass
 
