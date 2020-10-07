@@ -7,12 +7,11 @@ Thesis advisor: Prof. Davide Tosi
 ## Installation
 
 To run the project is required:
+- 
 
 ## Italy charts
 
 - Covid19 Swab Tests and New Cases in ITA
-
-- 
 
 ## Project status
 
