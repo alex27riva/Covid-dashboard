@@ -3,6 +3,7 @@ import pandas as pd
 import plotly.graph_objects as go
 
 """
+Chart n°: 3
 Title: Total cases
 Description: This chart shows a bar chart with total cases in Italy
 """

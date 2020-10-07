@@ -2,6 +2,7 @@
 import pandas as pd
 import plotly.graph_objects as go
 """
+Chart n°: 4
 Title: Hospitalized daily (with symptoms and ICU)
 Description: This chart shows a bar chart with daily total hospitalized patients in Italy
 """

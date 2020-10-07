@@ -2,27 +2,27 @@
 import pandas as pd
 import plotly.graph_objects as go
 """
-Chart n°: 6
-Title: Fatality Rate percentage
-Description: This chart shows a scatter chart of fatality rate percentage in Italy
+Title: Home isolation
+Description: This chart shows a bar chart with total ICU patients and 7 day moving average in Italy
 """
 
-dataset = '../../../dataset/italy_us.csv'
+dataset = '../../../dataset/dpc-covid19-ita-andamento-nazionale.csv'
 
 # chart title
-chart_title = "Fatality Rate (%) COVID-19 ITA"
+chart_title = "Home isolation"
 
 # column names
-x_name = 'date'
-y_name = 'death_index'
+x_name = 'data'
+y_name = 'isolamento_domiciliare'
 
 df = pd.read_csv(dataset, index_col=[], usecols=[x_name, y_name])
+df = df[101:]
 
 fig = go.Figure(
-    go.Scatter(x=df[x_name],
-               y=df[y_name],
-               name='Fatality rate',
-               line=dict(color='blue'))
+    go.Bar(x=df[x_name], y=df[y_name],
+           name='Home ISolation',
+           marker_color='SlateGray')
+
 )
 
 # Add title

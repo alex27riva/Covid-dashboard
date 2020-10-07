@@ -1,0 +1,63 @@
+#!/usr/bin/python3
+import pandas as pd
+import plotly.graph_objects as go
+"""
+Chart n°: 10
+Title: 7 day average: daily deaths vs daily cases
+Description: This chart shows new cases and daily deaths with respective 7 day moving average
+"""
+# todo: Add secondary axis
+
+dataset = '../../../dataset/italy.csv'
+# chart title
+chart_title = "7 day average: daily deaths vs daily cases"
+
+line_width = 2
+
+# column names
+x_name = 'date'
+y_new_cases = 'new_daily_cases'
+y_new_deaths = 'daily_deaths'
+
+
+# moving average
+new_cases_rolling = 'new_cases_rolling'
+new_deaths_rolling = 'new_deaths_rolling'
+
+df = pd.read_csv(dataset, index_col=[], usecols=[x_name, y_new_cases, y_new_deaths])
+df = df[105:]
+
+# calculate rolling average 7gg
+df[new_cases_rolling] = df[y_new_cases].rolling(7).mean()
+df[new_deaths_rolling] = df[y_new_deaths].rolling(7).mean()
+
+fig = go.Figure()
+
+fig.add_trace(
+    go.Scatter(x=df[x_name], y=df[new_cases_rolling],
+               name='New daily cases (7 day average)',
+               line=dict(color='orange', width=line_width))
+)
+
+fig.add_trace(
+    go.Scatter(x=df[x_name], y=df[new_deaths_rolling],
+               name='Daily deaths (7 day average)',
+               line=dict(color='blue', width=line_width))
+)
+
+fig.add_trace(go.Scatter(x=df[x_name], y=df[y_new_cases], name='New cases',
+                         line=dict(color='orange', width=line_width, dash='dot')))
+
+fig.add_trace(go.Scatter(x=df[x_name], y=df[y_new_deaths], name='New deaths',
+                         line=dict(color='blue', width=line_width, dash='dot')))
+
+# Add title
+fig.update_layout(
+    title_text=chart_title
+)
+# set x axis name
+fig.update_xaxes(title_text='Giorni')
+# set y axis title
+# fig.update_yaxes(title_text='')
+
+fig.show()

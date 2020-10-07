@@ -4,6 +4,7 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
 """
+Chart n°: 1
 Title: Covid-19 Swab Tests and New Cases in Italy
 Description: This chart shows a bar chart with daily deaths and a scatter line with new daily cases in Italy
 """
