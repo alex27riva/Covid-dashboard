@@ -2,6 +2,7 @@
 import pandas as pd
 import plotly.graph_objects as go
 """
+Chart n°: 12
 Title: ICU + severe disease
 Description: This chart shows a bar chart of total hospitalized patients and 7 day moving average in Italy
 """

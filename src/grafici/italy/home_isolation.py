@@ -2,6 +2,7 @@
 import pandas as pd
 import plotly.graph_objects as go
 """
+Chart n°: 13
 Title: Home isolation
 Description: This chart shows a bar chart with total ICU patients and 7 day moving average in Italy
 """
