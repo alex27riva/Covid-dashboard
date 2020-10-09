@@ -14,7 +14,7 @@ To run the project is required:
 | Chart n° | Filename                   | Title                                           |
 |:--------:|:--------------------------:|:-----------------------------------------------:|
 | 1        | tests_and_new_cases        | Covid-19 Swab Tests and New Cases in Italy      |
-| 2        |                            |                                                 |
+| 2        | daily_cases_estimation     |                                                 |
 | 3        | total_cases                | Total Cases                                     |
 | 4        | daily_hospitalized         | Hospitalized daily (with symptoms and ICU)      |
 | 5        | daily_recovery_vs_fatality | Daily Recoveries vs fatalities                  |
