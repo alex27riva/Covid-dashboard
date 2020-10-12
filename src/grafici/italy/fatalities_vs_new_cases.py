@@ -8,6 +8,7 @@ Chart n°: 9
 Title: Daily Fatality vs. New Cases
 Description: This chart shows a bar chart with daily deaths and a scatter line with new daily cases in Italy
 """
+# todo: remove italy.csv
 dataset = '../../../dataset/italy.csv'
 
 # chart title

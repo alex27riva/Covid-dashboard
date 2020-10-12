@@ -7,7 +7,8 @@ Title: Home isolation
 Description: This chart shows a bar chart with total ICU patients and 7 day moving average in Italy
 """
 
-dataset = '../../../dataset/dpc-covid19-ita-andamento-nazionale.csv'
+url = 'https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-andamento-nazionale/dpc-covid19-ita-andamento' \
+      '-nazionale.csv'
 
 # chart title
 chart_title = 'Home isolation'
@@ -16,7 +17,7 @@ chart_title = 'Home isolation'
 x_name = 'data'
 y_name = 'isolamento_domiciliare'
 
-df = pd.read_csv(dataset, index_col=[], usecols=[x_name, y_name])
+df = pd.read_csv(url, index_col=[], usecols=[x_name, y_name])
 df = df[101:]
 
 fig = go.Figure(

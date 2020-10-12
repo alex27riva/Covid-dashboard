@@ -7,6 +7,7 @@ Chart n°: 5
 Title: Daily Recoveries vs fatalities
 Description: This chart shows two bar charts with dead and recoveries and their moving averages.
 """
+# todo: remove italy.csv
 dataset = '../../../dataset/italy.csv'
 days = 5
 

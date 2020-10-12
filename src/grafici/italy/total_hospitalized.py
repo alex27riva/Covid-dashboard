@@ -7,7 +7,8 @@ Title: ICU + severe disease
 Description: This chart shows a bar chart of total hospitalized patients and 7 day moving average in Italy
 """
 
-dataset = '../../../dataset/dpc-covid19-ita-andamento-nazionale.csv'
+url = 'https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-andamento-nazionale/dpc-covid19-ita-andamento' \
+      '-nazionale.csv'
 
 # chart title
 chart_title = "ICU + severe disease"
@@ -17,7 +18,7 @@ x_name = 'data'
 y_name = 'totale_ospedalizzati'
 y_moving_7gg = '7_day_moving_average'
 
-df = pd.read_csv(dataset, index_col=[], usecols=[x_name, y_name])
+df = pd.read_csv(url, index_col=[], usecols=[x_name, y_name])
 df = df[120:]
 
 # rolling average 7gg

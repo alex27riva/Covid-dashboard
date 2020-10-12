@@ -6,6 +6,7 @@ Chart n°: 7
 Title: Normalizzed new daily cases in Italy
 Description: This chart shows a bar chart and 7 day average of normalized new cases in Italy
 """
+# todo: remove italy.csv
 
 dataset = '../../../dataset/italy.csv'
 # chart title

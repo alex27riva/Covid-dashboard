@@ -9,14 +9,15 @@ Description: This chart shows new cases and daily deaths with respective 7 day m
 """
 # todo: check if axis are correct
 
-dataset = '../../../dataset/dpc-covid19-ita-andamento-nazionale.csv'
+url = 'https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-andamento-nazionale/dpc-covid19-ita-andamento' \
+      '-nazionale.csv'
 # chart title
 chart_title = 'Ratio (%) New Positives / cases tested by swabs'
 
 # column names
 x_name = 'data'
 
-df = pd.read_csv(dataset, index_col=[], usecols=[x_name, 'casi_testati', 'nuovi_positivi', 'tamponi'])
+df = pd.read_csv(url, index_col=[], usecols=[x_name, 'casi_testati', 'nuovi_positivi', 'tamponi'])
 df = df[59:]  # trim data
 df['delta_casi_testati'] = df.casi_testati.diff().shift(-1)  # U
 df['tamponi_meno_casi_testati'] = df['tamponi'] - df['casi_testati']  # S

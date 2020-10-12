@@ -7,7 +7,8 @@ Title: ICU Cumulative
 Description: This chart shows a bar chart with total ICU patients and 7 day moving average in Italy
 """
 
-dataset = '../../../dataset/dpc-covid19-ita-andamento-nazionale.csv'
+url = 'https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-andamento-nazionale/dpc-covid19-ita-andamento' \
+      '-nazionale.csv'
 
 # chart title
 chart_title = "ICU Cumulative"
@@ -17,7 +18,7 @@ x_name = 'data'
 y_name = 'terapia_intensiva'
 y_moving_7gg = '7_day_moving_average'
 
-df = pd.read_csv(dataset, index_col=[], usecols=[x_name, y_name])
+df = pd.read_csv(url, index_col=[], usecols=[x_name, y_name])
 df = df[101:]
 
 # rolling average 7gg
@@ -40,7 +41,10 @@ fig.add_trace(
 fig.update_layout(
     title_text=chart_title
 )
-fig.update_xaxes(title_text="Days")
+fig.update_xaxes(
+    title_text="Days",
+    dtick="M1",
+    tickformat="%b\n%Y")
 # set y axis title
 # fig.update_yaxes(title_text="Normalized daily cases")
 

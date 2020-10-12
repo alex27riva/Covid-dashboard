@@ -7,21 +7,22 @@ Chart n°: 3
 Title: Total cases
 Description: This chart shows a bar chart with total cases in Italy
 """
-dataset = '../../../dataset/italy.csv'
+url = 'https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-andamento-nazionale/dpc-covid19-ita-andamento' \
+      '-nazionale.csv'
 
 # chart title
 chart_title = "Total Cases"
 
 # column names
-x_name = 'date'
-y_name = 'total_cases'
+x_name = 'data'
+y_name = 'totale_casi'
 
-df = pd.read_csv(dataset, index_col=[], usecols=[x_name, y_name])
+df = pd.read_csv(url, index_col=[], usecols=[x_name, y_name])
 
 fig = go.Figure(
     go.Bar(x=df[x_name], y=df[y_name],
            name='Total cases',
-           marker_color='OrangeRed')
+           marker_color='orange')
 )
 
 
@@ -29,6 +30,11 @@ fig = go.Figure(
 fig.update_layout(
     title_text=chart_title
 )
+# change y date tick
+fig.update_xaxes(
+    dtick="M1",
+    tickformat="%b\n%Y")
+
 # set x axis name
 fig.update_xaxes(title_text="Days")
 

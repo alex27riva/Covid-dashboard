@@ -6,7 +6,7 @@ import pandas
 
 # data URL
 url = 'https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-andamento-nazionale/dpc-covid19-ita-andamento' \
-      '-nazionale.csv '
+      '-nazionale.csv'
 
 df = pandas.read_csv(url)
 
@@ -22,7 +22,7 @@ def deaths_curve():
     fig = go.Figure(
         go.Bar(x=df['data'], y=df['deceduti_giorn'],
                name='Deaths',
-               marker_color='yellow')
+               marker_color='orange')
 
     )
     fig.add_trace(

@@ -13,8 +13,6 @@ dataset = '../../../dataset/italy.csv'
 # chart title
 chart_title = "7 day average: daily deaths vs daily cases"
 
-line_width = 2
-
 # column names
 x_name = 'date'
 y_new_cases = 'new_daily_cases'
@@ -36,21 +34,21 @@ fig = fig = make_subplots(specs=[[{"secondary_y": True}]])
 fig.add_trace(
     go.Scatter(x=df[x_name], y=df[new_cases_rolling],
                name='New daily cases (7 day average)',
-               line=dict(color='orange', width=line_width))
+               line=dict(color='orange'))
 )
 
 fig.add_trace(
     go.Scatter(x=df[x_name], y=df[new_deaths_rolling],
                name='Daily deaths (7 day average)',
-               line=dict(color='blue', width=line_width)),
+               line=dict(color='blue')),
     secondary_y=True
 )
 
 fig.add_trace(go.Scatter(x=df[x_name], y=df[y_new_cases], name='New cases',
-                         line=dict(color='orange', width=line_width, dash='dot')))
+                         line=dict(color='orange', dash='dot')))
 
 fig.add_trace(go.Scatter(x=df[x_name], y=df[y_new_deaths], name='New deaths',
-                         line=dict(color='blue', width=line_width, dash='dot')),
+                         line=dict(color='blue', dash='dot')),
               secondary_y=True)
 
 # Add title

@@ -8,6 +8,7 @@ Chart n°: 1
 Title: Covid-19 Swab Tests and New Cases in Italy
 Description: This chart shows a bar chart with daily deaths and a scatter line with new daily cases in Italy
 """
+# todo: remove italy.csv
 dataset = '../../../dataset/italy_us.csv'
 
 # chart title

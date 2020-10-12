@@ -7,16 +7,18 @@ Title: Fatality Rate percentage
 Description: This chart shows a scatter chart of fatality rate percentage in Italy
 """
 
-dataset = '../../../dataset/italy_us.csv'
+url = 'https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-andamento-nazionale/dpc-covid19-ita-andamento' \
+      '-nazionale.csv'
 
 # chart title
 chart_title = "Fatality Rate (%) COVID-19 ITA"
 
 # column names
-x_name = 'date'
-y_name = 'death_index'
+x_name = 'data'
+y_name = 'deaths_perc'
 
-df = pd.read_csv(dataset, index_col=[], usecols=[x_name, y_name])
+df = pd.read_csv(url, index_col=[], usecols=[x_name, 'totale_casi', 'deceduti'])
+df[y_name] = df['deceduti'] / df['totale_casi']
 
 fig = go.Figure(
     go.Scatter(x=df[x_name],
