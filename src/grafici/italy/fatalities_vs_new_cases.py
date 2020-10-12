@@ -8,23 +8,24 @@ Chart n°: 9
 Title: Daily Fatality vs. New Cases
 Description: This chart shows a bar chart with daily deaths and a scatter line with new daily cases in Italy
 """
-# todo: remove italy.csv
-dataset = '../../../dataset/italy.csv'
+# todo: da sistemare
+url = 'https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-andamento-nazionale/dpc-covid19-ita-andamento' \
+      '-nazionale.csv'
 
 # chart title
 chart_title = "Daily Fatality vs. New Cases"
 
 # column names
-x_name = 'date'
-y_name = 'daily_deaths'
-y_secondary_name = 'new_daily_cases'
+x_name = 'data'
+y_name = 'nuovi_positivi'
 
-df = pd.read_csv(dataset, index_col=[], usecols=[x_name, y_name, y_secondary_name])
+df = pd.read_csv(url, usecols=[x_name, 'deceduti', y_name])
+df['daily_deaths'] = df.deceduti.diff().fillna(df.deceduti)
 
 fig = make_subplots(specs=[[{"secondary_y": True}]])
 
 fig.add_trace(
-    go.Bar(x=df[x_name], y=df[y_name],
+    go.Bar(x=df[x_name], y=df['daily_deaths'],
            name='Daily deaths',
            marker_color='orange'),
     secondary_y=True
@@ -32,15 +33,34 @@ fig.add_trace(
 
 fig.add_trace(
     go.Scatter(x=df[x_name],
-               y=df[y_secondary_name],
+               y=df[y_name],
                name='New daily cases',
-               line=dict(color='blue'),
-               fill='tozeroy')
+               line=dict(color='blue'))  # fill='tozeroy'
 )
+
 # Add title
-fig.update_layout(
-    title_text=chart_title
+layout = dict(
+
 )
+fig.update_layout(
+    title_text=chart_title,
+    # yaxis=dict(
+    #     title='Price',
+    #     overlaying='y2',
+    #     anchor='y',
+    #     rangemode='tozero'
+    # ),
+    #
+    # yaxis2=dict(
+    #     title='Car',
+    #     dtick=1,
+    #     side='right',
+    #     anchor='y',
+    #     rangemode='tozero'
+    #
+    # )
+)
+
 # set x axis name
 fig.update_xaxes(title_text="Days")
 
