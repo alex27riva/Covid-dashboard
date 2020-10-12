@@ -37,11 +37,9 @@ fig.add_trace(
                line=dict(color='blue',
                          dash='dot'))
 )
-# Add title
 fig.update_layout(
     title_text=chart_title
 )
-# set x axis name
 fig.update_xaxes(title_text="Days")
 # set y axis title
 # fig.update_yaxes(title_text="Normalized daily cases")

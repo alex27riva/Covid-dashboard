@@ -10,7 +10,7 @@ Description: This chart shows a bar chart with total ICU patients and 7 day movi
 dataset = '../../../dataset/dpc-covid19-ita-andamento-nazionale.csv'
 
 # chart title
-chart_title = "Home isolation"
+chart_title = 'Home isolation'
 
 # column names
 x_name = 'data'
@@ -21,7 +21,7 @@ df = df[101:]
 
 fig = go.Figure(
     go.Bar(x=df[x_name], y=df[y_name],
-           name='Home ISolation',
+           name='Home Isolation',
            marker_color='SlateGray')
 
 )
