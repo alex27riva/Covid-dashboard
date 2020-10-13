@@ -9,7 +9,7 @@ Title: New Daily Cases - Estimate of the Phase2 and Phase2bis Impact - ITA
 Description: Estimation of the Phase2 and Phase2bis Impact in Italy
 Polynomial fit: https://plotly.com/python/v3/polynomial-fits/
 """
-# todo: fix errors
+# todo: add polynomial line
 
 dataset = '../../../dataset/italy.csv'
 
@@ -31,12 +31,12 @@ x_list = array[:, 0]
 y_list = array[:, 1]
 
 # calculate polynomial
-z = np.polyfit(x_list, y_list, 3)
-f = np.poly1d(z)
+# z = np.polyfit(x_list, y_list, 3)
+# f = np.poly1d(z)
 
 # calculate new x's and y's
-x_new = np.linspace(x_list[0], x_list[-1], 50)
-y_new = f(x_new)
+# x_new = np.linspace(x_list[0], x_list[-1], 50)
+# y_new = f(x_new)
 
 fig = go.Figure()
 
@@ -64,12 +64,12 @@ fig.add_trace(
                line=dict(color='yellow'))
 )
 
-fig.add_trace(
-    go.Scatter(x=x_new,
-               y=y_new,
-               name='Polynomial line',
-               )
-)
+# fig.add_trace(
+#     go.Scatter(x=x_new,
+#                y=y_new,
+#                name='Polynomial line',
+#                )
+# )
 
 # Add title
 fig.update_layout(

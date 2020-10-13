@@ -7,7 +7,6 @@ Chart n°: 8
 Title: Ratio (%) New Positives / cases tested by swabs
 Description: This chart shows new cases and daily deaths with respective 7 day moving average
 """
-# todo: check if axis are correct
 
 url = 'https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-andamento-nazionale/dpc-covid19-ita-andamento' \
       '-nazionale.csv'

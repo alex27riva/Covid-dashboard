@@ -6,24 +6,30 @@ Chart n°: 7
 Title: Normalizzed new daily cases in Italy
 Description: This chart shows a bar chart and 7 day average of normalized new cases in Italy
 """
-# todo: remove italy.csv
+url = 'https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-andamento-nazionale/dpc-covid19-ita-andamento' \
+      '-nazionale.csv'
 
-dataset = '../../../dataset/italy.csv'
 # chart title
 chart_title = "Normalized new daily cases in Italy (+ 7 day avg)"
 
+MIN_DELTA_TAMP = 964  # =MIN(Q$7:Q$119)    Q = delta_tamp
+REF_TAMP = 48000  # reference value
+
 # column names
-x_name = 'date'
-y_name = 'delta_cases_norm'
+x_name = 'data'
 y_moving_7gg = 'delta_cases_average'
 
-df = pd.read_csv(dataset, usecols=[x_name, y_name])
+df = pd.read_csv(url, usecols=[x_name, 'tamponi', 'nuovi_positivi'])
 df = df[77:]
+df['delta_tamponi'] = df.tamponi.diff().fillna(df.tamponi)
+df['tamp_norm'] = MIN_DELTA_TAMP / df['delta_tamponi'] * df['nuovi_positivi']
+df['nuovi_casi_norm'] = df['nuovi_positivi'] * REF_TAMP / df['delta_tamponi']
+
 # rolling average 7gg
-df[y_moving_7gg] = df[y_name].rolling(7).mean()
+df[y_moving_7gg] = df['nuovi_casi_norm'].rolling(7).mean()
 
 fig = go.Figure(
-    go.Bar(x=df[x_name], y=df[y_name],
+    go.Bar(x=df[x_name], y=df['nuovi_casi_norm'].astype(int),  # convert to int
            name='New cases')
 )
 

@@ -8,7 +8,7 @@ Chart n°: 9
 Title: Daily Fatality vs. New Cases
 Description: This chart shows a bar chart with daily deaths and a scatter line with new daily cases in Italy
 """
-# todo: da sistemare
+# todo: fix y axis misalignment
 url = 'https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-andamento-nazionale/dpc-covid19-ita-andamento' \
       '-nazionale.csv'
 
