@@ -17,7 +17,7 @@ chart_title = "Hospitalized daily (with symptoms and ICU)"
 x_name = 'data'
 y_name = 'delta_hospitalized'
 
-df = pd.read_csv(url, index_col=[], usecols=[x_name, 'totale_ospedalizzati'])
+df = pd.read_csv(url, usecols=[x_name, 'totale_ospedalizzati'])
 # df = df[136:]
 df[y_name] = df.totale_ospedalizzati.diff().shift(-1)
 

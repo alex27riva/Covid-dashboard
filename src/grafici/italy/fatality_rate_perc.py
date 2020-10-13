@@ -17,7 +17,7 @@ chart_title = "Fatality Rate (%) COVID-19 ITA"
 x_name = 'data'
 y_name = 'deaths_perc'
 
-df = pd.read_csv(url, index_col=[], usecols=[x_name, 'totale_casi', 'deceduti'])
+df = pd.read_csv(url, usecols=[x_name, 'totale_casi', 'deceduti'])
 df[y_name] = df['deceduti'] / df['totale_casi']
 
 fig = go.Figure(

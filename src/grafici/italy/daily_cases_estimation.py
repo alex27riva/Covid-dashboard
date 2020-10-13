@@ -20,7 +20,7 @@ chart_title = 'New Daily Cases - Estimate of the Phase2 and Phase2bis Impact - I
 x_name = 'date'
 y_name = 'new_daily_cases'
 
-df = pd.read_csv(dataset, index_col=[], usecols=[x_name, y_name])
+df = pd.read_csv(dataset, usecols=[x_name, y_name])
 df_phase2 = df[33:92]
 df_phase2_bis = df[92:217]
 

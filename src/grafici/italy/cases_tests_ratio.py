@@ -17,14 +17,14 @@ chart_title = 'Ratio (%) New Positives / cases tested by swabs'
 # column names
 x_name = 'data'
 
-df = pd.read_csv(url, index_col=[], usecols=[x_name, 'casi_testati', 'nuovi_positivi', 'tamponi'])
+df = pd.read_csv(url, usecols=[x_name, 'casi_testati', 'nuovi_positivi', 'tamponi'])
 df = df[59:]  # trim data
-df['delta_casi_testati'] = df.casi_testati.diff().shift(-1)  # U
+df['delta_casi_testati'] = df.casi_testati.diff().fillna(df.casi_testati)  # U
 df['tamponi_meno_casi_testati'] = df['tamponi'] - df['casi_testati']  # S
-df['delta_tamponi_casi'] = df.tamponi_meno_casi_testati.diff().shift(-1)  # T
+df['delta_tamponi_casi'] = df.tamponi_meno_casi_testati.diff().fillna(df.tamponi_meno_casi_testati)  # T
 # y axis
 df['ratio_cases_tests'] = (df['nuovi_positivi'] / df['delta_casi_testati']) * 100
-df['perc_tamponi_meno_testati'] = (df['nuovi_positivi'] / df['tamponi_meno_casi_testati']) * 100
+df['perc_tamponi_meno_testati'] = (df['nuovi_positivi'] / df['delta_tamponi_casi']) * 100
 
 # calculate rolling average 7gg
 df['rolling_tested'] = df['ratio_cases_tests'].rolling(7).mean()

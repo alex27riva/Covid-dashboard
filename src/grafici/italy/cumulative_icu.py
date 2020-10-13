@@ -18,7 +18,7 @@ x_name = 'data'
 y_name = 'terapia_intensiva'
 y_moving_7gg = '7_day_moving_average'
 
-df = pd.read_csv(url, index_col=[], usecols=[x_name, y_name])
+df = pd.read_csv(url, usecols=[x_name, y_name])
 df = df[101:]
 
 # rolling average 7gg

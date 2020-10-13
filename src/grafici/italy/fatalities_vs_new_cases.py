@@ -39,29 +39,13 @@ fig.add_trace(
 )
 
 # Add title
-layout = dict(
-
-)
 fig.update_layout(
-    title_text=chart_title,
-    # yaxis=dict(
-    #     title='Price',
-    #     overlaying='y2',
-    #     anchor='y',
-    #     rangemode='tozero'
-    # ),
-    #
-    # yaxis2=dict(
-    #     title='Car',
-    #     dtick=1,
-    #     side='right',
-    #     anchor='y',
-    #     rangemode='tozero'
-    #
-    # )
+    title_text=chart_title
 )
 
 # set x axis name
 fig.update_xaxes(title_text="Days")
+
+fig.update_yaxes(rangemode='tozero')
 
 fig.show()

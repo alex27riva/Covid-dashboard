@@ -17,7 +17,7 @@ chart_title = "Total Cases"
 x_name = 'data'
 y_name = 'totale_casi'
 
-df = pd.read_csv(url, index_col=[], usecols=[x_name, y_name])
+df = pd.read_csv(url, usecols=[x_name, y_name])
 
 fig = go.Figure(
     go.Bar(x=df[x_name], y=df[y_name],

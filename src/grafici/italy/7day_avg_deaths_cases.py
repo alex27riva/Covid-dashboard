@@ -22,7 +22,7 @@ y_new_deaths = 'daily_deaths'
 new_cases_rolling = 'new_cases_rolling'
 new_deaths_rolling = 'new_deaths_rolling'
 
-df = pd.read_csv(dataset, index_col=[], usecols=[x_name, y_new_cases, y_new_deaths])
+df = pd.read_csv(dataset, usecols=[x_name, y_new_cases, y_new_deaths])
 df = df[105:]
 
 # calculate rolling average 7gg

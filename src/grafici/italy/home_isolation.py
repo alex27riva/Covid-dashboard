@@ -17,7 +17,7 @@ chart_title = 'Home isolation'
 x_name = 'data'
 y_name = 'isolamento_domiciliare'
 
-df = pd.read_csv(url, index_col=[], usecols=[x_name, y_name])
+df = pd.read_csv(url, usecols=[x_name, y_name])
 df = df[101:]
 
 fig = go.Figure(

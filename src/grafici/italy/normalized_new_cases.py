@@ -17,7 +17,7 @@ x_name = 'date'
 y_name = 'delta_cases_norm'
 y_moving_7gg = 'delta_cases_average'
 
-df = pd.read_csv(dataset, index_col=[], usecols=[x_name, y_name])
+df = pd.read_csv(dataset, usecols=[x_name, y_name])
 df = df[77:]
 # rolling average 7gg
 df[y_moving_7gg] = df[y_name].rolling(7).mean()
