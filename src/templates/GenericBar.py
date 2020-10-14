@@ -12,12 +12,12 @@ class NewDailyCases:
     """This class show a graph that contains scatter and Bar"""
 
     def __init__(self, data):
+        self.x_name = x
         df = pd.read_csv(data, index_col=[], usecols=[x_name, y_name])
         fig = go.Figure()  # create figure object
 
     def set_column(self, x, y):
-        self.x_name = x
-
+        pass
 
     def add_bar(self, x, y, name):
         self.fig.add_trace(

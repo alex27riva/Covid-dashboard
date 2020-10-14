@@ -10,8 +10,6 @@ dataset = '../../../dataset/lombardia.csv'
 # chart title
 chart_title = "% New Cases / Swab Tests in Regione Lombardia"
 
-line_width = 2
-
 # column names
 x_name = 'data'
 y_new_cases = 'new_cases_test_percentage'
@@ -34,20 +32,20 @@ fig = go.Figure()
 fig.add_trace(
     go.Scatter(x=df[x_name], y=df[y_new_cases],
                name='New cases tested',
-               line=dict(color='orange', width=line_width))
+               line=dict(color='orange'))
 )
 
 fig.add_trace(
     go.Scatter(x=df[x_name], y=df[y_total_cases],
                name='Total cases tested',
-               line=dict(color='blue', width=line_width))
+               line=dict(color='blue'))
 )
 
 fig.add_trace(go.Scatter(x=df[x_name], y=df[new_cases_rolling], name='New cases (3 day average)',
-                         line=dict(color='orange', width=line_width, dash='dot')))
+                         line=dict(color='orange', dash='dot')))
 
 fig.add_trace(go.Scatter(x=df[x_name], y=df[total_cases_rolling], name='Total cases (3 day average)',
-                         line=dict(color='blue', width=line_width, dash='dot')))
+                         line=dict(color='blue', dash='dot')))
 
 # Add title
 fig.update_layout(

@@ -90,31 +90,32 @@ def normalized_new_cases():
     # column names
     x_name = 'data'
     y_moving_7gg = 'delta_cases_average'
-
-    #  df = df[77:]
-    df['delta_tamponi'] = df.tamponi.diff().fillna(df.tamponi)
-    df['tamp_norm'] = MIN_DELTA_TAMP / df['delta_tamponi'] * df['nuovi_positivi']
-    df['nuovi_casi_norm'] = df['nuovi_positivi'] * REF_TAMP / df['delta_tamponi']
+    df_loc = df.copy()
+    df_loc = df_loc[77:]
+    df_loc['delta_tamponi'] = df_loc.tamponi.diff().fillna(df_loc.tamponi)
+    df_loc['tamp_norm'] = MIN_DELTA_TAMP / df_loc['delta_tamponi'] * df_loc['nuovi_positivi']
+    df_loc['nuovi_casi_norm'] = df_loc['nuovi_positivi'] * REF_TAMP / df_loc['delta_tamponi']
 
     # rolling average 7gg
-    df[y_moving_7gg] = df['nuovi_casi_norm'].rolling(7).mean()
+    df_loc[y_moving_7gg] = df_loc['nuovi_casi_norm'].rolling(7).mean()
 
     fig = go.Figure(
-        go.Bar(x=df[x_name], y=df['nuovi_casi_norm'].astype(int),  # convert to int
+        go.Bar(x=df_loc[x_name], y=df_loc['nuovi_casi_norm'].astype(int),  # convert to int
                name='New cases')
     )
 
     fig.add_trace(
-        go.Scatter(x=df[x_name],
-                   y=df[y_moving_7gg],
+        go.Scatter(x=df_loc[x_name],
+                   y=df_loc[y_moving_7gg],
                    name='7 day average')
     )
 
     fig.update_layout(
-        title_text='Normalized new daily cases in Italy (+ 7 day avg)"'
+        title_text='Normalized new daily cases in Italy (+ 7 day avg)'
     )
     fig.update_xaxes(title_text="Days")
     fig.update_yaxes(title_text="Normalized daily cases")
+    return fig
 
 
 app.layout = html.Div(

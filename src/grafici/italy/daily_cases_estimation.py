@@ -11,16 +11,17 @@ Polynomial fit: https://plotly.com/python/v3/polynomial-fits/
 """
 # todo: add polynomial line
 
-dataset = '../../../dataset/italy.csv'
+url = 'https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-andamento-nazionale/dpc-covid19-ita-andamento' \
+      '-nazionale.csv'
 
 # chart title
 chart_title = 'New Daily Cases - Estimate of the Phase2 and Phase2bis Impact - ITA'
 
 # column names
-x_name = 'date'
-y_name = 'new_daily_cases'
+x_name = 'data'
+y_name = 'nuovi_positivi'
 
-df = pd.read_csv(dataset, usecols=[x_name, y_name])
+df = pd.read_csv(url, usecols=[x_name, y_name])
 df_phase2 = df[33:92]
 df_phase2_bis = df[92:217]
 
