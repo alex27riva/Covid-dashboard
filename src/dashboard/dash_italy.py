@@ -83,6 +83,40 @@ def home_isolation():
     return fig
 
 
+def normalized_new_cases():
+    MIN_DELTA_TAMP = 964  # =MIN(Q$7:Q$119)    Q = delta_tamp
+    REF_TAMP = 48000  # reference value
+
+    # column names
+    x_name = 'data'
+    y_moving_7gg = 'delta_cases_average'
+
+    #  df = df[77:]
+    df['delta_tamponi'] = df.tamponi.diff().fillna(df.tamponi)
+    df['tamp_norm'] = MIN_DELTA_TAMP / df['delta_tamponi'] * df['nuovi_positivi']
+    df['nuovi_casi_norm'] = df['nuovi_positivi'] * REF_TAMP / df['delta_tamponi']
+
+    # rolling average 7gg
+    df[y_moving_7gg] = df['nuovi_casi_norm'].rolling(7).mean()
+
+    fig = go.Figure(
+        go.Bar(x=df[x_name], y=df['nuovi_casi_norm'].astype(int),  # convert to int
+               name='New cases')
+    )
+
+    fig.add_trace(
+        go.Scatter(x=df[x_name],
+                   y=df[y_moving_7gg],
+                   name='7 day average')
+    )
+
+    fig.update_layout(
+        title_text='Normalized new daily cases in Italy (+ 7 day avg)"'
+    )
+    fig.update_xaxes(title_text="Days")
+    fig.update_yaxes(title_text="Normalized daily cases")
+
+
 app.layout = html.Div(
     html.Div([
         html.H1(children='Dashboard Italy'),
@@ -95,7 +129,9 @@ app.layout = html.Div(
         dcc.Graph(id='isolamento-domiciliare',
                   figure=home_isolation()),
         dcc.Graph(id='daily-deaths',
-                  figure=deaths_curve())
+                  figure=deaths_curve()),
+        dcc.Graph(id='normalyzed-new-cases',
+                  figure=normalized_new_cases())
 
     ])
 )
