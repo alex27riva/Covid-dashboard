@@ -11,9 +11,15 @@ url = 'https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-andamento-
 # read csv for url
 df = pandas.read_csv(url)
 
-app = dash.Dash()
+external_stylesheets = ['https://codepen.io/amyoshino/pen/jzXypZ.css']
 
-app.title = 'Dashboard Italy'
+# app = dash.Dash()
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+
+app.title = 'Dashboard Italia'
+
+# data calculation
+df['terapia_intensiva_avg'] = df['terapia_intensiva'].rolling(7).mean()
 
 
 # deaths curve
@@ -38,35 +44,6 @@ def deaths_curve():
     fig.update_xaxes(title_text="Days")
     return fig
 
-
-# chart n°11
-def cumulative_icu():
-    y_moving_7gg = 'moving_avg'
-    df[y_moving_7gg] = df['terapia_intensiva'].rolling(7).mean()
-    fig = go.Figure(
-        go.Bar(x=df['data'], y=df['terapia_intensiva'],
-               name='ICU patients',
-               marker_color='orange')
-
-    )
-
-    fig.add_trace(
-        go.Scatter(x=df['data'],
-                   y=df[y_moving_7gg],
-                   name='7 day average',
-                   line=dict(color='blue',
-                             dash='dot'))
-    )
-    # Add title
-    fig.update_layout(
-        title_text='ICU Cumulative'
-    )
-    # set x axis name
-    fig.update_xaxes(title_text="Days")
-    return fig
-
-
-# ---
 
 # chart 13
 def home_isolation():
@@ -120,25 +97,24 @@ def normalized_new_cases():
 
 
 # Bootstrap CSS
-app.css.append_css({'external_url': 'https://codepen.io/amyoshino/pen/jzXypZ.css'})
+# app.css.append_css({'external_url': 'https://codepen.io/amyoshino/pen/jzXypZ.css'})
 
 app.layout = html.Div(  # main div
     html.Div([
-        html.Div([  # div for title and image
-            html.H1(children='Dashboard Italy',
-                    className='nine columns'),
+        html.Div([
             html.Img(
                 src='https://www.uninsubria.it/sites/all/themes/uninsubria/logo.png',
                 className='three columns',
                 style={
-                    'height': '14%',
-                    'width': '14%',
+                    'height': '9%',
+                    'width': '9%',
                     'float': 'right',
                     'position': 'relative',
-                    # 'margin-top': 5,
-                    # 'margin-right': 20
                 },
             ),
+            html.H1(children='Dashboard Italy',
+                    className='nine columns'),
+
             html.Div(children='Covid19 dashboard for Italy',
                      className='nine columns')
 
@@ -147,34 +123,27 @@ app.layout = html.Div(  # main div
         html.Div([  # div for charts
             html.Div([
                 dcc.Graph(
-                    id='comulative-icu',
+                    id='cumulative-icu',
                     figure={
                         'data': [
-                            {'x': df['data'], 'y': df['terapia_intensiva'], 'type': 'bar', 'name': 'TI'}
-                            # todo: add moving avg
+                            {'x': df['data'], 'y': df['terapia_intensiva'], 'type': 'bar', 'name': 'Terapia Intensiva'},
+                            {'x': df['data'], 'y': df['terapia_intensiva_avg'], 'type': 'scatter',
+                             'name': '7 day moving avg'}
                         ],
                         'layout': {
                             'title': 'Terapia intensiva'
-
-
                         }
-
+                    },
+                    config={
+                        'displaylogo': False,
+                        'displayModeBar': False
+                    },
+                    style={
+                        'margin-top': 20
                     }
                 )
-
             ], className='six columns')
         ], className='row')
-
-        # dcc.Graph(id='cumulative-icu',
-        #           figure=cumulative_icu()
-        #           ),
-        # dcc.Graph(id='isolamento-domiciliare',
-        #           figure=home_isolation()),
-        # dcc.Graph(id='daily-deaths',
-        #           figure=deaths_curve()),
-        # dcc.Graph(id='normalyzed-new-cases',
-        #           figure=normalized_new_cases())
-
     ], className='ten columns offset-by-one')
 )
 
