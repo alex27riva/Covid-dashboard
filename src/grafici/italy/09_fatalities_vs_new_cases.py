@@ -35,8 +35,9 @@ fig.add_trace(
     go.Scatter(x=df[x_name],
                y=df[y_name],
                name='New daily cases',
-               line=dict(color='blue'))  # fill='tozeroy'
-)
+               line=dict(color='blue')),
+    secondary_y=False,
+)  # fill='tozeroy',
 
 # Add title
 fig.update_layout(
@@ -46,6 +47,6 @@ fig.update_layout(
 # set x axis name
 fig.update_xaxes(title_text="Days")
 
-fig.update_yaxes(rangemode='tozero')
+fig.update_yaxes(rangemode='tozeroy')
 
 fig.show()
