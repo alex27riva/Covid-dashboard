@@ -8,7 +8,6 @@ Chart n°: 9
 Title: Daily Fatality vs. New Cases
 Description: This chart shows a bar chart with daily deaths and a scatter line with new daily cases in Italy
 """
-# todo: fix y axis misalignment
 url = 'https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-andamento-nazionale/dpc-covid19-ita-andamento' \
       '-nazionale.csv'
 
@@ -35,9 +34,10 @@ fig.add_trace(
     go.Scatter(x=df[x_name],
                y=df[y_name],
                name='New daily cases',
-               line=dict(color='blue')),
+               line=dict(color='blue'),
+               fill='tozeroy'),
     secondary_y=False,
-)  # fill='tozeroy',
+)
 
 # Add title
 fig.update_layout(
@@ -46,7 +46,6 @@ fig.update_layout(
 
 # set x axis name
 fig.update_xaxes(title_text="Days")
-
-fig.update_yaxes(rangemode='tozeroy')
+fig.update_yaxes(rangemode='nonnegative')
 
 fig.show()

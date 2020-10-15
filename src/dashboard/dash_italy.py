@@ -8,6 +8,7 @@ import pandas
 url = 'https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-andamento-nazionale/dpc-covid19-ita-andamento' \
       '-nazionale.csv'
 
+# read csv for url
 df = pandas.read_csv(url)
 
 app = dash.Dash()
@@ -118,23 +119,63 @@ def normalized_new_cases():
     return fig
 
 
-app.layout = html.Div(
+# Bootstrap CSS
+app.css.append_css({'external_url': 'https://codepen.io/amyoshino/pen/jzXypZ.css'})
+
+app.layout = html.Div(  # main div
     html.Div([
-        html.H1(children='Dashboard Italy'),
+        html.Div([  # div for title and image
+            html.H1(children='Dashboard Italy',
+                    className='nine columns'),
+            html.Img(
+                src='https://www.uninsubria.it/sites/all/themes/uninsubria/logo.png',
+                className='three columns',
+                style={
+                    'height': '14%',
+                    'width': '14%',
+                    'float': 'right',
+                    'position': 'relative',
+                    # 'margin-top': 5,
+                    # 'margin-right': 20
+                },
+            ),
+            html.Div(children='Covid19 dashboard for Italy',
+                     className='nine columns')
 
-        html.Div(children='Covid19 dashboard for Italy'),
+        ], className='row'),
 
-        dcc.Graph(id='cumulative-icu',
-                  figure=cumulative_icu()
-                  ),
-        dcc.Graph(id='isolamento-domiciliare',
-                  figure=home_isolation()),
-        dcc.Graph(id='daily-deaths',
-                  figure=deaths_curve()),
-        dcc.Graph(id='normalyzed-new-cases',
-                  figure=normalized_new_cases())
+        html.Div([  # div for charts
+            html.Div([
+                dcc.Graph(
+                    id='comulative-icu',
+                    figure={
+                        'data': [
+                            {'x': df['data'], 'y': df['terapia_intensiva'], 'type': 'bar', 'name': 'TI'}
+                            # todo: add moving avg
+                        ],
+                        'layout': {
+                            'title': 'Terapia intensiva'
 
-    ])
+
+                        }
+
+                    }
+                )
+
+            ], className='six columns')
+        ], className='row')
+
+        # dcc.Graph(id='cumulative-icu',
+        #           figure=cumulative_icu()
+        #           ),
+        # dcc.Graph(id='isolamento-domiciliare',
+        #           figure=home_isolation()),
+        # dcc.Graph(id='daily-deaths',
+        #           figure=deaths_curve()),
+        # dcc.Graph(id='normalyzed-new-cases',
+        #           figure=normalized_new_cases())
+
+    ], className='ten columns offset-by-one')
 )
 
 if __name__ == '__main__':
