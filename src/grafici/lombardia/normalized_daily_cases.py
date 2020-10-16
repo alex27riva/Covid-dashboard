@@ -5,7 +5,7 @@ import plotly.graph_objects as go
 Title: Normalizzed new daily cases in Regione Lombardia
 Description: This chart shows a bar chart of normalized new cases in Lombardia
 """
-
+# todo: Remove old dataset
 dataset = '../../../dataset/lombardia.csv'
 # chart title
 chart_title = "Normalized new daily cases in Regione Lombardia"
