@@ -22,11 +22,29 @@ chart_config = {'displaylogo': False,
                 'responsive': True
                 }
 
+# slider buttons
+slider_button = list([
+    dict(count=1,
+         label="1m",
+         step="month",
+         stepmode="backward"),
+    dict(count=3,
+         label="3m",
+         step="month",
+         stepmode="backward"),
+    dict(count=6,
+         label="6m",
+         step="month",
+         stepmode="backward"),
+    dict(step="all")
+])
+
 # data calculation
 df['terapia_intensiva_avg'] = df['terapia_intensiva'].rolling(7).mean()
 df['nuovi_decessi'] = df.deceduti.diff().fillna(df.deceduti)
 df['nuovi_positivi_avg'] = df['nuovi_positivi'].rolling(7).mean()
 df['nuovi_decessi_avg'] = df['nuovi_decessi'].rolling(7).mean()
+df['totale_ospedalizzati_avg'] = df['totale_ospedalizzati'].rolling(7).mean()
 
 app.layout = html.Div(  # main div
     html.Div([
@@ -138,6 +156,25 @@ app.layout = html.Div(  # main div
                     config=chart_config
                 )
 
+            ], className='six columns'),
+            html.Div([
+                dcc.Graph(
+                    id='totale-ospedalizzati',
+                    figure={
+                        'data': [
+                            {'x': df['data'], 'y': df['totale_ospedalizzati'], 'type': 'bar',
+                             'name': 'Totale ospedalizzati',
+                             'marker': dict(color='DarkCyan')},
+                            {'x': df['data'], 'y': df['totale_ospedalizzati_avg'], 'type': 'scatter',
+                             'line': dict(color='blue', dash='dot'),
+                             'name': 'Media 7 giorni'}
+                        ],
+                        'layout': {
+                            'title': 'Terapia intensiva e casi gravi'
+                        }
+                    },
+                    config=chart_config
+                )
             ], className='six columns')
 
         ], className='row'),
@@ -156,7 +193,13 @@ app.layout = html.Div(  # main div
                         ],
                         'layout': {
                             'title': 'Nuovi casi vs decessi',
-                            'yaxis': {'rangemode': 'nonnegative'},
+                            'xaxis': dict(
+                                rangeselector=dict(buttons=slider_button),
+                                rangeslider=dict(visible=True),
+                                type='date'
+                            ),
+                            'yaxis': {'rangemode': 'nonnegative',
+                                      },
                             'yaxis2': {
                                 'side': 'right',
                                 'overlaying': 'y',  # show both traces,
