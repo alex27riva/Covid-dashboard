@@ -16,9 +16,17 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 app_title = 'Dashboard Italia'
 
+# chart config
+chart_config = {'displaylogo': False,
+                'displayModeBar': False,
+                'responsive': True
+                }
+
 # data calculation
 df['terapia_intensiva_avg'] = df['terapia_intensiva'].rolling(7).mean()
 df['nuovi_decessi'] = df.deceduti.diff().fillna(df.deceduti)
+df['nuovi_positivi_avg'] = df['nuovi_positivi'].rolling(7).mean()
+df['nuovi_decessi_avg'] = df['nuovi_decessi'].rolling(7).mean()
 
 app.layout = html.Div(  # main div
     html.Div([
@@ -53,10 +61,7 @@ app.layout = html.Div(  # main div
                             'title': 'Casi totali'
                         }
                     },
-                    config={
-                        'displaylogo': False,
-                        'displayModeBar': False
-                    }
+                    config=chart_config
                 )
             ], className='four columns'),
             html.Div([
@@ -68,12 +73,13 @@ app.layout = html.Div(  # main div
                              'marker': dict(color='grey')},
                         ],
                         'layout': {
-                            'title': 'Isolamento domicialiare'
+                            'title': 'Isolamento domiciliare'
                         }
                     },
                     config={
                         'displaylogo': False,
-                        'displayModeBar': False
+                        'displayModeBar': False,
+                        'responsive': True
                     }
                 )
             ], className='four columns'),
@@ -93,16 +99,50 @@ app.layout = html.Div(  # main div
                             'title': 'Terapia intensiva'
                         }
                     },
-                    config={
-                        'displaylogo': False,
-                        'displayModeBar': False
-                    }
+                    config=chart_config
                 )
             ], className='four columns'),
 
         ], className='row'),
-
         html.Div([  # second chart row
+            html.Div([
+                dcc.Graph(
+                    id='rapporto-positivi-tamponi',
+                    figure={
+                        'data': [
+                            {'x': df['data'], 'y': df['nuovi_positivi'], 'type': 'scatter',
+                             'line': dict(color='orange', dash='dot'),
+                             'name': 'Nuovi casi'},
+                            {'x': df['data'], 'y': df['nuovi_decessi'], 'type': 'scatter', 'yaxis': 'y2',
+                             'line': dict(color='blue', dash='dot'),
+                             'name': 'Decessi giornalieri'},
+                            {'x': df['data'], 'y': df['nuovi_positivi_avg'], 'type': 'scatter',
+                             'line': dict(color='orange'),
+                             'name': 'Nuovi casi (media 7 giorni)'},
+                            {'x': df['data'], 'y': df['nuovi_decessi_avg'], 'type': 'scatter', 'yaxis': 'y2',
+                             'line': dict(color='blue'),
+                             'name': 'Nuovi decessi (media 7 giorni)'}
+                        ],
+                        'layout': {
+                            'title': 'Media mobile a 7gg: Decessi giornalieri vs. Contagi giornalieri',
+                            'yaxis': {'rangemode': 'nonnegative'},
+                            'yaxis2': {
+                                'side': 'right',
+                                'overlaying': 'y',  # show both traces,
+                                'rangemode': 'nonnegative'
+
+                            }
+
+                        }
+                    },
+                    config=chart_config
+                )
+
+            ], className='six columns')
+
+        ], className='row'),
+
+        html.Div([  # third chart row
             html.Div([
                 dcc.Graph(
                     id='nuovi-casi-vs-morti',
@@ -126,10 +166,7 @@ app.layout = html.Div(  # main div
 
                         }
                     },
-                    config={
-                        'displaylogo': False,
-                        'displayModeBar': False
-                    }
+                    config=chart_config
                 )
 
             ], className='twelve columns')
