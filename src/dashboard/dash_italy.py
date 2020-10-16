@@ -1,6 +1,5 @@
 import dash
 import dash_core_components as dcc
-import plotly.graph_objects as go
 import dash_html_components as html
 import pandas
 
@@ -45,27 +44,6 @@ app.layout = html.Div(  # main div
         html.Div([  # first chart row
             html.Div([
                 dcc.Graph(
-                    id='Terapia-intensiva',
-                    figure={
-                        'data': [
-                            {'x': df['data'], 'y': df['terapia_intensiva'], 'type': 'bar', 'name': 'Terapia Intensiva',
-                             'marker': dict(color='DodgerBlue')},
-                            {'x': df['data'], 'y': df['terapia_intensiva_avg'], 'type': 'scatter',
-                             'line': dict(color='blue'),
-                             'name': '7 day moving avg'}
-                        ],
-                        'layout': {
-                            'title': 'Terapia intensiva'
-                        }
-                    },
-                    config={
-                        'displaylogo': False,
-                        'displayModeBar': False
-                    }
-                )
-            ], className='six columns'),
-            html.Div([
-                dcc.Graph(
                     id='Casi-totali',
                     figure={
                         'data': [
@@ -80,7 +58,48 @@ app.layout = html.Div(  # main div
                         'displayModeBar': False
                     }
                 )
-            ], className='six columns')
+            ], className='four columns'),
+            html.Div([
+                dcc.Graph(
+                    id='isolamento-domiciliare',
+                    figure={
+                        'data': [
+                            {'x': df['data'], 'y': df['isolamento_domiciliare'], 'type': 'bar',
+                             'marker': dict(color='grey')},
+                        ],
+                        'layout': {
+                            'title': 'Isolamento domicialiare'
+                        }
+                    },
+                    config={
+                        'displaylogo': False,
+                        'displayModeBar': False
+                    }
+                )
+            ], className='four columns'),
+
+            html.Div([
+                dcc.Graph(
+                    id='Terapia-intensiva',
+                    figure={
+                        'data': [
+                            {'x': df['data'], 'y': df['terapia_intensiva'], 'type': 'bar', 'name': 'Terapia Intensiva',
+                             'marker': dict(color='orange')},
+                            {'x': df['data'], 'y': df['terapia_intensiva_avg'], 'type': 'scatter',
+                             'line': dict(color='blue'),
+                             'name': 'Media 7 giorni'}
+                        ],
+                        'layout': {
+                            'title': 'Terapia intensiva'
+                        }
+                    },
+                    config={
+                        'displaylogo': False,
+                        'displayModeBar': False
+                    }
+                )
+            ], className='four columns'),
+
         ], className='row'),
 
         html.Div([  # second chart row
@@ -89,21 +108,20 @@ app.layout = html.Div(  # main div
                     id='nuovi-casi-vs-morti',
                     figure={
                         'data': [
-                            {'x': df['data'], 'y': df['nuovi_decessi'], 'type': 'bar', 'name': 'Morti giornalieri',
-                             'marker': dict(color='DimGrey')},
-                            {'x': df['data'], 'y': df['nuovi_positivi'], 'type': 'scatter', 'xaxis': 'x2',
-                             'yaxis': 'y2',
+                            {'x': df['data'], 'y': df['nuovi_decessi'], 'type': 'bar', 'name': 'Nuovi decessi',
+                             'yaxis': 'y1', 'marker': dict(color='orange')},
+                            {'x': df['data'], 'y': df['nuovi_positivi'], 'type': 'scatter', 'yaxis': 'y2',
                              'line': dict(color='blue'),
                              'name': 'Nuovi casi'}
                         ],
                         'layout': {
-                            'yaxis': {
-                                'title': 'Nuovi casi vs morti giornalieri',
-                                'secondary_y': False
-                            },
+                            'title': 'Nuovi casi vs decessi',
+                            'yaxis': {'rangemode': 'nonnegative'},
                             'yaxis2': {
-                                'title': 'Nuovi casi vs morti giornalieri',
-                                'secondary_y': True
+                                'side': 'right',
+                                'overlaying': 'y',  # show both traces,
+                                'rangemode': 'tozero'
+
                             }
 
                         }
@@ -117,6 +135,7 @@ app.layout = html.Div(  # main div
             ], className='twelve columns')
 
         ], className='row')
+
     ], className='ten columns offset-by-one')
 )
 
