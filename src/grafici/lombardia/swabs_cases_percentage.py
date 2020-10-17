@@ -15,11 +15,10 @@ chart_title = "% New Cases / Swab Tests in Regione Lombardia"
 x_name = 'data'
 y_total_cases = 'positive_swabs_percentage'
 
-
 df = pd.read_csv(url)
 
 df = df.loc[df['denominazione_regione'] == 'Lombardia']
-df = df[65:]
+# df = df[65:]
 # calculation
 df['delta_casi_testati'] = df.casi_testati.diff().fillna(df.casi_testati)
 df['incr_tamponi'] = df.tamponi.diff().fillna(df.tamponi)
@@ -52,7 +51,8 @@ fig.add_trace(go.Scatter(x=df[x_name], y=df['perc_positivi_test_avg'], name='Tot
 
 # Add title
 fig.update_layout(
-    title_text=chart_title
+    title_text=chart_title,
+    xaxis_range=['2020-04-22', '2020-10-15']
 )
 # set x axis name
 fig.update_xaxes(title_text="Giorni")

@@ -117,7 +117,16 @@ app.layout = html.Div(  # main div
                              'name': 'Totale casi (media 3gg)'}
                         ],
                         'layout': {
-                            'title': '% Nuovi Casi / Test con tamponi in Regione Lombardia'
+                            'title': '% Nuovi Casi / Test con tamponi in Regione Lombardia',
+                            'xaxis': {
+                                'type': 'date',
+                                'range': ['2020-04-22', '2020-10-15']
+                            },
+                            'yaxis': {
+                                'range': [0, 30],
+                                'tickprefix': '% '
+                            }
+
                         }
                     },
                     config=chart_config
