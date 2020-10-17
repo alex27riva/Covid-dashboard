@@ -43,9 +43,19 @@ slider_button = list([
 # data calculation
 df['terapia_intensiva_avg'] = df['terapia_intensiva'].rolling(7).mean()
 df['nuovi_decessi'] = df.deceduti.diff().fillna(df.deceduti)
+
+# percentage swab - cases
+df['delta_casi_testati'] = df.casi_testati.diff().fillna(df.casi_testati)
+df['incr_tamponi'] = df.tamponi.diff().fillna(df.tamponi)
+df['perc_positivi_tamponi'] = (df['nuovi_positivi'] / df['incr_tamponi']) * 100  # AB
+df['perc_positivi_test'] = (df['nuovi_positivi'] / df['delta_casi_testati']) * 100  # AD
+
+# rolling averages
 df['nuovi_positivi_avg'] = df['nuovi_positivi'].rolling(7).mean()
 df['nuovi_decessi_avg'] = df['nuovi_decessi'].rolling(7).mean()
 df['totale_ospedalizzati_avg'] = df['totale_ospedalizzati'].rolling(7).mean()
+df['perc_positivi_tamponi_avg'] = df['perc_positivi_tamponi'].rolling(3).mean()
+df['perc_positivi_test_avg'] = df['perc_positivi_test'].rolling(3).mean()
 
 app.layout = html.Div(  # main div
     html.Div([
@@ -72,6 +82,54 @@ app.layout = html.Div(  # main div
         html.Div([  # first chart row
             html.Div([
                 dcc.Graph(
+                    id='andamento-contagi',
+                    figure={
+                        'data': [
+                            {'x': df['data'], 'y': df['nuovi_positivi'], 'type': 'bar', 'name': 'Nuovi Casi',
+                             # 'marker': dict(color='LightSalmon')
+                             },
+                            {'x': df['data'], 'y': df['nuovi_positivi_avg'], 'type': 'scatter',
+                             'line': dict(color='orange'),
+                             'name': 'Media 7 giorni'}
+                        ],
+                        'layout': {
+                            'title': 'Andamento dei contagi Lombardia'
+                        }
+                    },
+                    config=chart_config
+                )
+
+            ], className='six columns'),
+            html.Div([
+                dcc.Graph(
+                    id='perc-casi-tamponi',
+                    figure={
+                        'data': [
+                            {'x': df['data'], 'y': df['perc_positivi_test'], 'type': 'scatter',
+                             'name': 'Nuovi Casi testati', 'line': dict(color='orange')},
+                            {'x': df['data'], 'y': df['perc_positivi_tamponi'], 'type': 'scatter',
+                             'line': dict(color='blue'),
+                             'name': 'Totale casi testati'},
+                            {'x': df['data'], 'y': df['perc_positivi_test_avg'], 'type': 'scatter',
+                             'name': 'Nuovi Casi (media 3gg)', 'line': dict(color='orange', dash='dot')},
+                            {'x': df['data'], 'y': df['perc_positivi_tamponi_avg'], 'type': 'scatter',
+                             'line': dict(color='blue', dash='dot'),
+                             'name': 'Totale casi (media 3gg)'}
+                        ],
+                        'layout': {
+                            'title': '% Nuovi Casi / Test con tamponi in Regione Lombardia'
+                        }
+                    },
+                    config=chart_config
+                )
+
+            ], className='six columns')
+
+        ], className='row'),
+
+        html.Div([  # second chart row
+            html.Div([
+                dcc.Graph(
                     id='Terapia-intensiva',
                     figure={
                         'data': [
@@ -93,7 +151,8 @@ app.layout = html.Div(  # main div
                     id='totale-ospedalizzati',
                     figure={
                         'data': [
-                            {'x': df['data'], 'y': df['totale_ospedalizzati'], 'type': 'bar', 'name': 'Ospedalizzazioni'},
+                            {'x': df['data'], 'y': df['totale_ospedalizzati'], 'type': 'bar',
+                             'name': 'Ospedalizzazioni'},
                         ],
                         'layout': {
                             'title': 'Totale ospedalizzati'
@@ -122,104 +181,9 @@ app.layout = html.Div(  # main div
                 )
             ], className='four columns'),
 
-
-
         ], className='row'),
-        # html.Div([  # second chart row
-        #     html.Div([
-        #         dcc.Graph(
-        #             id='rapporto-positivi-tamponi',
-        #             figure={
-        #                 'data': [
-        #                     {'x': df['data'], 'y': df['nuovi_positivi'], 'type': 'scatter',
-        #                      'line': dict(color='orange', dash='dot'),
-        #                      'name': 'Nuovi casi'},
-        #                     {'x': df['data'], 'y': df['nuovi_decessi'], 'type': 'scatter', 'yaxis': 'y2',
-        #                      'line': dict(color='blue', dash='dot'),
-        #                      'name': 'Decessi giornalieri'},
-        #                     {'x': df['data'], 'y': df['nuovi_positivi_avg'], 'type': 'scatter',
-        #                      'line': dict(color='orange'),
-        #                      'name': 'Nuovi casi (media 7 giorni)'},
-        #                     {'x': df['data'], 'y': df['nuovi_decessi_avg'], 'type': 'scatter', 'yaxis': 'y2',
-        #                      'line': dict(color='blue'),
-        #                      'name': 'Nuovi decessi (media 7 giorni)'}
-        #                 ],
-        #                 'layout': {
-        #                     'title': 'Media mobile a 7gg: Decessi giornalieri vs. Contagi giornalieri',
-        #                     'yaxis': {'rangemode': 'nonnegative'},
-        #                     'yaxis2': {
-        #                         'side': 'right',
-        #                         'overlaying': 'y',  # show both traces,
-        #                         'rangemode': 'nonnegative'
-        #
-        #                     }
-        #
-        #                 }
-        #             },
-        #             config=chart_config
-        #         )
-        #
-        #     ], className='six columns'),
-        #     html.Div([
-        #         dcc.Graph(
-        #             id='totale-ospedalizzati',
-        #             figure={
-        #                 'data': [
-        #                     {'x': df['data'], 'y': df['totale_ospedalizzati'], 'type': 'bar',
-        #                      'name': 'Totale ospedalizzati',
-        #                      'marker': dict(color='DarkCyan')},
-        #                     {'x': df['data'], 'y': df['totale_ospedalizzati_avg'], 'type': 'scatter',
-        #                      'line': dict(color='blue', dash='dot'),
-        #                      'name': 'Media 7 giorni'}
-        #                 ],
-        #                 'layout': {
-        #                     'title': 'Terapia intensiva e casi gravi'
-        #                 }
-        #             },
-        #             config=chart_config
-        #         )
-        #     ], className='six columns')
-        #
-        # ], className='row'),
-        #
-        # html.Div([  # third chart row
-        #     html.Div([
-        #         dcc.Graph(
-        #             id='nuovi-casi-vs-morti',
-        #             figure={
-        #                 'data': [
-        #                     {'x': df['data'], 'y': df['nuovi_decessi'], 'type': 'bar', 'name': 'Nuovi decessi',
-        #                      'yaxis': 'y1', 'marker': dict(color='orange')},
-        #                     {'x': df['data'], 'y': df['nuovi_positivi'], 'type': 'scatter', 'yaxis': 'y2',
-        #                      'line': dict(color='blue'),
-        #                      'name': 'Nuovi casi'}
-        #                 ],
-        #                 'layout': {
-        #                     'title': 'Nuovi casi vs decessi',
-        #                     'xaxis': dict(
-        #                         rangeselector=dict(buttons=slider_button),
-        #                         rangeslider=dict(visible=True),
-        #                         type='date'
-        #                     ),
-        #                     'yaxis': {'rangemode': 'nonnegative',
-        #                               },
-        #                     'yaxis2': {
-        #                         'side': 'right',
-        #                         'overlaying': 'y',  # show both traces,
-        #                         'rangemode': 'tozero'
-        #
-        #                     }
-        #
-        #                 }
-        #             },
-        #             config=chart_config
-        #         )
-        #
-        #     ], className='twelve columns')
-        #
-        # ], className='row')
 
-    ], className='twelve columns')
+    ], className='ten columns offset-by-one')  # twelve columns
 )
 
 if __name__ == '__main__':
