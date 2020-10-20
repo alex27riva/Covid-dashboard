@@ -1,4 +1,6 @@
 #!/usr/bin/python3
+from datetime import date
+
 import pandas as pd
 import plotly.graph_objects as go
 
@@ -6,7 +8,7 @@ import plotly.graph_objects as go
 Title: % New Cases / Swab Tests in Regione Lombardia
 Description: This chart shows the percentahe of new cases and total cases in Lombardia
 """
-
+today = date.today()
 url = 'https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-regioni/dpc-covid19-ita-regioni.csv'
 # chart title
 chart_title = "% New Cases / Swab Tests in Regione Lombardia"
@@ -52,7 +54,7 @@ fig.add_trace(go.Scatter(x=df[x_name], y=df['perc_positivi_test_avg'], name='Tot
 # Add title
 fig.update_layout(
     title_text=chart_title,
-    xaxis_range=['2020-04-22', '2020-10-15']
+    xaxis_range=['2020-04-22', today]
 )
 # set x axis name
 fig.update_xaxes(title_text="Giorni")

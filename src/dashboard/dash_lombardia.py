@@ -93,7 +93,12 @@ app.layout = html.Div(  # main div
                              'name': 'Media 7 giorni'}
                         ],
                         'layout': {
-                            'title': 'Andamento dei contagi Lombardia'
+                            'title': 'Andamento dei contagi Lombardia',
+                            'xaxis': dict(
+                                rangeselector=dict(buttons=slider_button),
+                                rangeslider=dict(visible=False),
+                                type='date'
+                            )
                         }
                     },
                     config=chart_config
@@ -149,7 +154,12 @@ app.layout = html.Div(  # main div
                              'name': 'Media 7 giorni'}
                         ],
                         'layout': {
-                            'title': 'Terapia intensiva'
+                            'title': 'Terapia intensiva',
+                            'xaxis': dict(
+                                rangeselector=dict(buttons=slider_button),
+                                rangeslider=dict(visible=False),
+                                type='date'
+                            )
                         }
                     },
                     config=chart_config
@@ -164,7 +174,12 @@ app.layout = html.Div(  # main div
                              'name': 'Ospedalizzazioni'},
                         ],
                         'layout': {
-                            'title': 'Totale ospedalizzati'
+                            'title': 'Totale ospedalizzati',
+                            'xaxis': dict(
+                                rangeselector=dict(buttons=slider_button),
+                                rangeslider=dict(visible=False),
+                                type='date'
+                            )
                         }
                     },
                     config=chart_config
@@ -179,7 +194,12 @@ app.layout = html.Div(  # main div
                              'marker': dict(color='grey')},
                         ],
                         'layout': {
-                            'title': 'Decessi giornalieri'
+                            'title': 'Decessi giornalieri',
+                            'xaxis': dict(
+                                rangeselector=dict(buttons=slider_button),
+                                rangeslider=dict(visible=False),
+                                type='date'
+                            )
                         }
                     },
                     config={

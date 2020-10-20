@@ -25,15 +25,14 @@ fig = go.Figure(
            marker_color='orange')
 )
 
-
 # Add title
 fig.update_layout(
     title_text=chart_title
 )
 # change y date tick
 fig.update_xaxes(
-    dtick="M1",
-    tickformat="%b\n%Y")
+    dtick="M1"
+)
 
 # set x axis name
 fig.update_xaxes(title_text="Days")

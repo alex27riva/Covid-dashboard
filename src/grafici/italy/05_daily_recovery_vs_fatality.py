@@ -21,6 +21,7 @@ df = pd.read_csv(url, usecols=[x_name, 'deceduti', 'dimessi_guariti'])
 # calculate delta
 df['daily_deaths'] = df.deceduti.diff().fillna(df.deceduti)
 df['daily_recoveries'] = df.dimessi_guariti.diff().fillna(df.dimessi_guariti)
+
 # calculate rolling average
 df['deaths_rolling'] = df['daily_deaths'].rolling(days).mean()
 df['recoveries_rolling'] = df['daily_recoveries'].rolling(days).mean()

@@ -77,7 +77,12 @@ app.layout = html.Div(  # main div
                             {'x': df['data'], 'y': df['totale_casi'], 'type': 'bar', 'name': 'Casi totali'},
                         ],
                         'layout': {
-                            'title': 'Casi totali'
+                            'title': 'Casi totali',
+                            'xaxis': dict(
+                                rangeselector=dict(buttons=slider_button),
+                                rangeslider=dict(visible=False),
+                                type='date'
+                            )
                         }
                     },
                     config=chart_config
@@ -92,14 +97,15 @@ app.layout = html.Div(  # main div
                              'marker': dict(color='grey')},
                         ],
                         'layout': {
-                            'title': 'Isolamento domiciliare'
+                            'title': 'Isolamento domiciliare',
+                            'xaxis': dict(
+                                rangeselector=dict(buttons=slider_button),
+                                rangeslider=dict(visible=False),
+                                type='date'
+                            )
                         }
                     },
-                    config={
-                        'displaylogo': False,
-                        'displayModeBar': False,
-                        'responsive': True
-                    }
+                    config=chart_config
                 )
             ], className='four columns'),
 
@@ -115,7 +121,12 @@ app.layout = html.Div(  # main div
                              'name': 'Media 7 giorni'}
                         ],
                         'layout': {
-                            'title': 'Terapia intensiva'
+                            'title': 'Terapia intensiva',
+                            'xaxis': dict(
+                                rangeselector=dict(buttons=slider_button),
+                                rangeslider=dict(visible=False),
+                                type='date'
+                            )
                         }
                     },
                     config=chart_config
@@ -123,6 +134,7 @@ app.layout = html.Div(  # main div
             ], className='four columns'),
 
         ], className='row'),
+
         html.Div([  # second chart row
             html.Div([
                 dcc.Graph(
@@ -171,7 +183,12 @@ app.layout = html.Div(  # main div
                              'name': 'Media 7 giorni'}
                         ],
                         'layout': {
-                            'title': 'Terapia intensiva e casi gravi'
+                            'title': 'Terapia intensiva e casi gravi',
+                            'xaxis': dict(
+                                rangeselector=dict(buttons=slider_button),
+                                rangeslider=dict(visible=False),
+                                type='date'
+                            )
                         }
                     },
                     config=chart_config

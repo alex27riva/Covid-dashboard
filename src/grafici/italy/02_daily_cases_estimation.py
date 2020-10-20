@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 import pandas as pd
 import plotly.graph_objects as go
-import numpy as np
 
 """
 Chart n°: 2
@@ -78,7 +77,5 @@ fig.update_layout(
 )
 # set x axis name
 fig.update_xaxes(title_text="Days")
-# set y axis title
-# fig.update_yaxes(title_text='')
 
 fig.show()

@@ -33,7 +33,5 @@ fig.update_layout(
 )
 # set x axis name
 fig.update_xaxes(title_text="Days")
-# set y axis title
-# fig.update_yaxes(title_text="Normalized daily cases")
 
 fig.show()

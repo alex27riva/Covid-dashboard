@@ -26,14 +26,15 @@ df[y_moving_7gg] = df[y_name].rolling(7).mean()
 
 fig = go.Figure(
     go.Bar(x=df[x_name], y=df[y_name],
-           name='Total hospitalized')
+           name='Total hospitalized',
+           marker_color='grey')
 )
 
 fig.add_trace(
     go.Scatter(x=df[x_name],
                y=df[y_moving_7gg],
                name='7 day average',
-               line=dict(color='blue',
+               line=dict(color='red',
                          dash='dot'))
 )
 # Add title
@@ -42,7 +43,5 @@ fig.update_layout(
 )
 # set x axis name
 fig.update_xaxes(title_text="Days")
-# set y axis title
-# fig.update_yaxes(title_text="Normalized daily cases")
 
 fig.show()

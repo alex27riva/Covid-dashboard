@@ -7,7 +7,9 @@ Thesis advisor: Prof. Davide Tosi
 ## Installation
 
 To run the project is required:
--
+- Pandas
+- Plotly
+- Dash
 
 ## Italy charts
 

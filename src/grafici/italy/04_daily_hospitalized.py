@@ -32,9 +32,7 @@ fig.update_layout(
 # set x axis name
 fig.update_xaxes(
     title_text='Days',
-    dtick="M1",
-    tickformat="%b\n%Y")
-# set y axis title
-# fig.update_yaxes(title_text="Normalized daily cases")
+    dtick="M1"
+)
 
 fig.show()
