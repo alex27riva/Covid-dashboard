@@ -40,12 +40,33 @@ slider_button = list([
     dict(step="all")
 ])
 
+# costants
+MIN_DELTA_TAMP = 964  # =MIN(Q$7:Q$119)    Q = delta_tamp
+REF_TAMP = 48000  # reference value
+
 # data calculation
-df['terapia_intensiva_avg'] = df['terapia_intensiva'].rolling(7).mean()
 df['nuovi_decessi'] = df.deceduti.diff().fillna(df.deceduti)
+
+# normalized cases
+df['delta_tamponi'] = df.tamponi.diff().fillna(df.tamponi)
+df['tamp_norm'] = MIN_DELTA_TAMP / df['delta_tamponi'] * df['nuovi_positivi']
+df['nuovi_casi_norm'] = df['nuovi_positivi'] * REF_TAMP / df['delta_tamponi']
+
+# ratio cases - tests
+df['delta_casi_testati'] = df.casi_testati.diff().fillna(df.casi_testati)  # U
+df['tamponi_meno_casi_testati'] = df['tamponi'] - df['casi_testati']  # S
+df['delta_tamponi_casi'] = df.tamponi_meno_casi_testati.diff().fillna(df.tamponi_meno_casi_testati)  # T
+df['rapp_casi_test'] = (df['nuovi_positivi'] / df['delta_casi_testati']) * 100
+df['perc_tamponi_meno_testati'] = (df['nuovi_positivi'] / df['delta_tamponi_casi']) * 100
+
+# averages
+df['terapia_intensiva_avg'] = df['terapia_intensiva'].rolling(7).mean()
 df['nuovi_positivi_avg'] = df['nuovi_positivi'].rolling(7).mean()
 df['nuovi_decessi_avg'] = df['nuovi_decessi'].rolling(7).mean()
 df['totale_ospedalizzati_avg'] = df['totale_ospedalizzati'].rolling(7).mean()
+df['nuovi_casi_norm_avg'] = df['nuovi_casi_norm'].rolling(7).mean()
+df['rolling_tested'] = df['rapp_casi_test'].rolling(7).mean()
+df['rolling_swabs_tested'] = df['perc_tamponi_meno_testati'].rolling(7).mean()
 
 app.layout = html.Div(  # main div
     html.Div([
@@ -68,7 +89,7 @@ app.layout = html.Div(  # main div
 
         ], className='row'),
 
-        html.Div([  # first chart row
+        html.Div([  # casi totali, isolamento, terapia intensiva
             html.Div([
                 dcc.Graph(
                     id='Casi-totali',
@@ -115,7 +136,7 @@ app.layout = html.Div(  # main div
                     figure={
                         'data': [
                             {'x': df['data'], 'y': df['terapia_intensiva'], 'type': 'bar', 'name': 'Terapia Intensiva',
-                             'marker': dict(color='orange')},
+                             'marker': dict(color='RebeccaPurple')},
                             {'x': df['data'], 'y': df['terapia_intensiva_avg'], 'type': 'scatter',
                              'line': dict(color='blue'),
                              'name': 'Media 7 giorni'}
@@ -133,6 +154,56 @@ app.layout = html.Div(  # main div
                 )
             ], className='four columns'),
 
+        ], className='row'),
+
+        html.Div([  # nuovi casi / decessi
+            html.Div([
+                dcc.Graph(
+                    id='nuovi-casi-norm',
+                    figure={
+                        'data': [
+                            {'x': df['data'], 'y': df['nuovi_casi_norm'], 'type': 'bar', 'name': 'Nuovi casi norm.',
+                             'marker': dict(color='DarkOliveGreen')},
+                            {'x': df['data'], 'y': df['nuovi_casi_norm_avg'], 'type': 'scatter', 'name': 'Media 7gg'}
+                        ],
+                        'layout': {
+                            'title': 'Nuovi casi normalizzati',
+                            'xaxis': dict(
+                                rangeselector=dict(buttons=slider_button),
+                                rangeslider=dict(visible=False),
+                                type='date'
+                            )
+                        }
+                    },
+                    config=chart_config
+                )
+
+            ], className='six columns'),
+
+            html.Div([
+                dcc.Graph(
+                    id='totale-ospedalizzati',
+                    figure={
+                        'data': [
+                            {'x': df['data'], 'y': df['totale_ospedalizzati'], 'type': 'bar',
+                             'name': 'Totale ospedalizzati',
+                             'marker': dict(color='DarkCyan')},
+                            {'x': df['data'], 'y': df['totale_ospedalizzati_avg'], 'type': 'scatter',
+                             'line': dict(color='blue', dash='dot'),
+                             'name': 'Media 7 giorni'}
+                        ],
+                        'layout': {
+                            'title': 'Terapia intensiva e casi gravi',
+                            'xaxis': dict(
+                                rangeselector=dict(buttons=slider_button),
+                                rangeslider=dict(visible=False),
+                                type='date'
+                            )
+                        }
+                    },
+                    config=chart_config
+                )
+            ], className='six columns')
         ], className='row'),
 
         html.Div([  # second chart row
@@ -170,29 +241,42 @@ app.layout = html.Div(  # main div
                 )
 
             ], className='six columns'),
+
             html.Div([
                 dcc.Graph(
-                    id='totale-ospedalizzati',
+                    id='rapporto-pos-tamponi',
                     figure={
                         'data': [
-                            {'x': df['data'], 'y': df['totale_ospedalizzati'], 'type': 'bar',
-                             'name': 'Totale ospedalizzati',
-                             'marker': dict(color='DarkCyan')},
-                            {'x': df['data'], 'y': df['totale_ospedalizzati_avg'], 'type': 'scatter',
+                            {'x': df['data'], 'y': df['rolling_tested'], 'type': 'scatter',
+                             'line': dict(color='orange'),
+                             'name': 'Media mobile (% casi testati)'},
+                            {'x': df['data'], 'y': df['rolling_swabs_tested'], 'type': 'scatter', 'yaxis': 'y2',
+                             'line': dict(color='blue'),
+                             'name': 'Media mobile (% tamp totali - casi testati)'},
+                            {'x': df['data'], 'y': df['rapp_casi_test'], 'type': 'scatter',
+                             'line': dict(color='orange', dash='dot'),
+                             'name': '% Casi testati'},
+                            {'x': df['data'], 'y': df['perc_tamponi_meno_testati'], 'type': 'scatter', 'yaxis': 'y2',
                              'line': dict(color='blue', dash='dot'),
-                             'name': 'Media 7 giorni'}
+                             'name': '% Tamponi totali - Casi testati'}
+
                         ],
                         'layout': {
-                            'title': 'Terapia intensiva e casi gravi',
-                            'xaxis': dict(
-                                rangeselector=dict(buttons=slider_button),
-                                rangeslider=dict(visible=False),
-                                type='date'
-                            )
+                            'title': 'Rapporto (%) Nuovi Positivi / Casi Testati tramite Tamponi',
+                            'yaxis': {'rangemode': 'nonnegative'},
+                            'yaxis2': {
+                                'side': 'right',
+                                'overlaying': 'y',  # show both traces,
+                                'rangemode': 'nonnegative'
+
+                            }
+
                         }
                     },
                     config=chart_config
+
                 )
+
             ], className='six columns')
 
         ], className='row'),

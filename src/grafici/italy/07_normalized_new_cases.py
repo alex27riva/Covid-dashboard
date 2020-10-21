@@ -17,7 +17,6 @@ REF_TAMP = 48000  # reference value
 
 # column names
 x_name = 'data'
-y_moving_7gg = 'delta_cases_average'
 
 df = pd.read_csv(url, usecols=[x_name, 'tamponi', 'nuovi_positivi'])
 df = df[77:]
@@ -26,7 +25,7 @@ df['tamp_norm'] = MIN_DELTA_TAMP / df['delta_tamponi'] * df['nuovi_positivi']
 df['nuovi_casi_norm'] = df['nuovi_positivi'] * REF_TAMP / df['delta_tamponi']
 
 # rolling average 7gg
-df[y_moving_7gg] = df['nuovi_casi_norm'].rolling(7).mean()
+df['nuovi_casi_norm_avg'] = df['nuovi_casi_norm'].rolling(7).mean()
 
 fig = go.Figure(
     go.Bar(x=df[x_name], y=df['nuovi_casi_norm'].astype(int),  # convert to int
@@ -35,7 +34,7 @@ fig = go.Figure(
 
 fig.add_trace(
     go.Scatter(x=df[x_name],
-               y=df[y_moving_7gg],
+               y=df['nuovi_casi_norm_avg'],
                name='7 day average')
 )
 

@@ -22,11 +22,11 @@ df['delta_casi_testati'] = df.casi_testati.diff().fillna(df.casi_testati)  # U
 df['tamponi_meno_casi_testati'] = df['tamponi'] - df['casi_testati']  # S
 df['delta_tamponi_casi'] = df.tamponi_meno_casi_testati.diff().fillna(df.tamponi_meno_casi_testati)  # T
 # y axis
-df['ratio_cases_tests'] = (df['nuovi_positivi'] / df['delta_casi_testati']) * 100
+df['rapp_casi_test'] = (df['nuovi_positivi'] / df['delta_casi_testati']) * 100
 df['perc_tamponi_meno_testati'] = (df['nuovi_positivi'] / df['delta_tamponi_casi']) * 100
 
 # calculate rolling average 7gg
-df['rolling_tested'] = df['ratio_cases_tests'].rolling(7).mean()
+df['rolling_tested'] = df['rapp_casi_test'].rolling(7).mean()
 df['rolling_swabs_tested'] = df['perc_tamponi_meno_testati'].rolling(7).mean()
 
 fig = go.Figure()
@@ -43,7 +43,7 @@ fig.add_trace(
                line=dict(color='orange'))
 )
 
-fig.add_trace(go.Scatter(x=df[x_name], y=df['ratio_cases_tests'], name='% tested cases',
+fig.add_trace(go.Scatter(x=df[x_name], y=df['rapp_casi_test'], name='% tested cases',
                          line=dict(color='blue', dash='dot')))
 
 fig.add_trace(go.Scatter(x=df[x_name], y=df['perc_tamponi_meno_testati'], name='% Total Swabs - tested cases',
