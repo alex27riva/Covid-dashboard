@@ -17,7 +17,7 @@ df = df.loc[df['denominazione_regione'] == 'Lombardia']
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
-app_title = 'Dashboard Lombardia'
+app.title = 'Dashboard Lombardia'
 
 # chart config
 chart_config = {'displaylogo': False,
