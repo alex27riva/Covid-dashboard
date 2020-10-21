@@ -1,4 +1,6 @@
 #!/usr/bin/python3
+from datetime import date
+
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
@@ -6,6 +8,7 @@ import pandas
 
 # data URL
 url = 'https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-regioni/dpc-covid19-ita-regioni.csv'
+today = date.today()
 
 # read csv for url
 df = pandas.read_csv(url)
@@ -14,7 +17,6 @@ df = df.loc[df['denominazione_regione'] == 'Lombardia']
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
-
 app_title = 'Dashboard Lombardia'
 
 # chart config
@@ -125,7 +127,7 @@ app.layout = html.Div(  # main div
                             'title': '% Nuovi Casi / Test con tamponi in Regione Lombardia',
                             'xaxis': {
                                 'type': 'date',
-                                'range': ['2020-04-22', '2020-10-15']
+                                'range': ['2020-04-22', today]
                             },
                             'yaxis': {
                                 'range': [0, 30],

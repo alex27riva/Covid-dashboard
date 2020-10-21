@@ -1,4 +1,6 @@
 #!/usr/bin/python3
+from datetime import date
+
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
@@ -7,6 +9,7 @@ import pandas
 # data URL
 url = 'https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-andamento-nazionale/dpc-covid19-ita-andamento' \
       '-nazionale.csv'
+today = date.today()
 
 # read csv for url
 df = pandas.read_csv(url)
@@ -14,7 +17,6 @@ df = pandas.read_csv(url)
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
-
 app_title = 'Dashboard Italia'
 
 # chart config
@@ -227,6 +229,10 @@ app.layout = html.Div(  # main div
                         ],
                         'layout': {
                             'title': 'Media mobile a 7gg: Decessi giornalieri vs. Contagi giornalieri',
+                            'xaxis': {
+                                'type': 'date',
+                                'range': ['2020-04-22', today]
+                            },
                             'yaxis': {'rangemode': 'nonnegative'},
                             'yaxis2': {
                                 'side': 'right',
@@ -263,6 +269,10 @@ app.layout = html.Div(  # main div
                         ],
                         'layout': {
                             'title': 'Rapporto (%) Nuovi Positivi / Casi Testati tramite Tamponi',
+                            'xaxis': {
+                                'type': 'date',
+                                'range': ['2020-04-22', today]
+                            },
                             'yaxis': {'rangemode': 'nonnegative'},
                             'yaxis2': {
                                 'side': 'right',
