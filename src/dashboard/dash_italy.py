@@ -91,7 +91,28 @@ app.layout = html.Div(  # main div
 
         ], className='row'),
 
-        html.Div([  # casi totali, isolamento, terapia intensiva
+        html.Div([  # nuovi positivi, casi totali,
+            html.Div([
+                dcc.Graph(
+                    id='nuovi_positivi',
+                    figure={
+                        'data': [
+                            {'x': df['data'], 'y': df['nuovi_positivi'], 'type': 'bar', 'name': 'Casi totali'},
+                        ],
+                        'layout': {
+                            'title': 'Nuovi Casi',
+                            'xaxis': dict(
+                                rangeselector=dict(buttons=slider_button),
+                                rangeslider=dict(visible=False),
+                                type='date'
+                            )
+                        }
+                    },
+                    config=chart_config
+
+                )
+
+            ], className='six columns'),
             html.Div([
                 dcc.Graph(
                     id='Casi-totali',
@@ -100,7 +121,7 @@ app.layout = html.Div(  # main div
                             {'x': df['data'], 'y': df['totale_casi'], 'type': 'bar', 'name': 'Casi totali'},
                         ],
                         'layout': {
-                            'title': 'Casi totali',
+                            'title': 'Totale Casi',
                             'xaxis': dict(
                                 rangeselector=dict(buttons=slider_button),
                                 rangeslider=dict(visible=False),
@@ -110,7 +131,11 @@ app.layout = html.Div(  # main div
                     },
                     config=chart_config
                 )
-            ], className='four columns'),
+            ], className='six columns'),
+
+        ], className='row'),
+
+        html.Div([  # isolamento, terapia intensiva
             html.Div([
                 dcc.Graph(
                     id='isolamento-domiciliare',
@@ -130,7 +155,7 @@ app.layout = html.Div(  # main div
                     },
                     config=chart_config
                 )
-            ], className='four columns'),
+            ], className='six columns'),
 
             html.Div([
                 dcc.Graph(
@@ -154,7 +179,7 @@ app.layout = html.Div(  # main div
                     },
                     config=chart_config
                 )
-            ], className='four columns'),
+            ], className='six columns'),
 
         ], className='row'),
 
@@ -253,18 +278,19 @@ app.layout = html.Div(  # main div
                     id='rapporto-pos-tamponi',
                     figure={
                         'data': [
+                            {'x': df['data'], 'y': df['rapp_casi_test'], 'type': 'scatter',
+                             'line': dict(color='orange', dash='dot'),
+                             'name': '% Casi testati'},
+                            {'x': df['data'], 'y': df['perc_tamponi_meno_testati'], 'type': 'scatter', 'yaxis': 'y2',
+                             'line': dict(color='blue', dash='dot'),
+                             'name': '% Tamponi totali - Casi testati'},
+
                             {'x': df['data'], 'y': df['rolling_tested'], 'type': 'scatter',
                              'line': dict(color='orange'),
                              'name': 'Media mobile (% casi testati)'},
                             {'x': df['data'], 'y': df['rolling_swabs_tested'], 'type': 'scatter', 'yaxis': 'y2',
                              'line': dict(color='blue'),
                              'name': 'Media mobile (% tamp totali - casi testati)'},
-                            {'x': df['data'], 'y': df['rapp_casi_test'], 'type': 'scatter',
-                             'line': dict(color='orange', dash='dot'),
-                             'name': '% Casi testati'},
-                            {'x': df['data'], 'y': df['perc_tamponi_meno_testati'], 'type': 'scatter', 'yaxis': 'y2',
-                             'line': dict(color='blue', dash='dot'),
-                             'name': '% Tamponi totali - Casi testati'}
 
                         ],
                         'layout': {
@@ -326,6 +352,10 @@ app.layout = html.Div(  # main div
 
             ], className='twelve columns')
 
+        ], className='row'),
+        html.Div([  # credits
+            html.Div(children='© 2020 D. Tosi, A. Riva, A. Schiavone, Università Insubria. All rights reserved.',
+                     className='six columns')
         ], className='row')
 
     ], className='ten columns offset-by-one')
