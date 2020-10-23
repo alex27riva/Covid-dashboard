@@ -10,8 +10,6 @@ import pandas
 url = 'https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-andamento-nazionale/dpc-covid19-ita-andamento' \
       '-nazionale.csv'
 today = date.today()
-
-# read csv for url
 df = pandas.read_csv(url)
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
@@ -46,29 +44,40 @@ slider_button = list([
 MIN_DELTA_TAMP = 964  # =MIN(Q$7:Q$119)    Q = delta_tamp
 REF_TAMP = 48000  # reference value
 
-# data calculation
-df['nuovi_decessi'] = df.deceduti.diff().fillna(df.deceduti)
 
-# normalized cases
-df['delta_tamponi'] = df.tamponi.diff().fillna(df.tamponi)
-df['tamp_norm'] = MIN_DELTA_TAMP / df['delta_tamponi'] * df['nuovi_positivi']
-df['nuovi_casi_norm'] = df['nuovi_positivi'] * REF_TAMP / df['delta_tamponi']
+def refresh_data():
+    global today
+    global df
+    # read csv for url and get date
+    df = pandas.read_csv(url)
+    today = date.today()
 
-# ratio cases - tests
-df['delta_casi_testati'] = df.casi_testati.diff().fillna(df.casi_testati)  # U
-df['tamponi_meno_casi_testati'] = df['tamponi'] - df['casi_testati']  # S
-df['delta_tamponi_casi'] = df.tamponi_meno_casi_testati.diff().fillna(df.tamponi_meno_casi_testati)  # T
-df['rapp_casi_test'] = (df['nuovi_positivi'] / df['delta_casi_testati']) * 100
-df['perc_tamponi_meno_testati'] = (df['nuovi_positivi'] / df['delta_tamponi_casi']) * 100
+    # data calculation
+    df['nuovi_decessi'] = df.deceduti.diff().fillna(df.deceduti)
 
-# averages
-df['terapia_intensiva_avg'] = df['terapia_intensiva'].rolling(7).mean()
-df['nuovi_positivi_avg'] = df['nuovi_positivi'].rolling(7).mean()
-df['nuovi_decessi_avg'] = df['nuovi_decessi'].rolling(7).mean()
-df['totale_ospedalizzati_avg'] = df['totale_ospedalizzati'].rolling(7).mean()
-df['nuovi_casi_norm_avg'] = df['nuovi_casi_norm'].rolling(7).mean()
-df['rolling_tested'] = df['rapp_casi_test'].rolling(7).mean()
-df['rolling_swabs_tested'] = df['perc_tamponi_meno_testati'].rolling(7).mean()
+    # normalized cases
+    df['delta_tamponi'] = df.tamponi.diff().fillna(df.tamponi)
+    df['tamp_norm'] = MIN_DELTA_TAMP / df['delta_tamponi'] * df['nuovi_positivi']
+    df['nuovi_casi_norm'] = df['nuovi_positivi'] * REF_TAMP / df['delta_tamponi']
+
+    # ratio cases - tests
+    df['delta_casi_testati'] = df.casi_testati.diff().fillna(df.casi_testati)  # U
+    df['tamponi_meno_casi_testati'] = df['tamponi'] - df['casi_testati']  # S
+    df['delta_tamponi_casi'] = df.tamponi_meno_casi_testati.diff().fillna(df.tamponi_meno_casi_testati)  # T
+    df['rapp_casi_test'] = (df['nuovi_positivi'] / df['delta_casi_testati']) * 100
+    df['perc_tamponi_meno_testati'] = (df['nuovi_positivi'] / df['delta_tamponi_casi']) * 100
+
+    # averages
+    df['terapia_intensiva_avg'] = df['terapia_intensiva'].rolling(7).mean()
+    df['nuovi_positivi_avg'] = df['nuovi_positivi'].rolling(7).mean()
+    df['nuovi_decessi_avg'] = df['nuovi_decessi'].rolling(7).mean()
+    df['totale_ospedalizzati_avg'] = df['totale_ospedalizzati'].rolling(7).mean()
+    df['nuovi_casi_norm_avg'] = df['nuovi_casi_norm'].rolling(7).mean()
+    df['rolling_tested'] = df['rapp_casi_test'].rolling(7).mean()
+    df['rolling_swabs_tested'] = df['perc_tamponi_meno_testati'].rolling(7).mean()
+
+
+refresh_data()
 
 app.layout = html.Div(  # main div
     html.Div([
@@ -290,7 +299,7 @@ app.layout = html.Div(  # main div
                              'name': 'Media mobile (% casi testati)'},
                             {'x': df['data'], 'y': df['rolling_swabs_tested'], 'type': 'scatter', 'yaxis': 'y2',
                              'line': dict(color='blue'),
-                             'name': 'Media mobile (% tamp totali - casi testati)'},
+                             'name': 'Media mobile (% tamp totali - casi testati)'}
 
                         ],
                         'layout': {
@@ -353,9 +362,11 @@ app.layout = html.Div(  # main div
             ], className='twelve columns')
 
         ], className='row'),
+
         html.Div([  # credits
-            html.Div(children='© 2020 D. Tosi, A. Riva, A. Schiavone, Università Insubria. All rights reserved.',
-                     className='six columns')
+            html.Footer(children='© 2020 D. Tosi, A. Riva, A. Schiavone, Università Insubria. All rights reserved.',
+                        style=dict(font="14.0px 'Helvetica Light'"),
+                        className='six columns')
         ], className='row')
 
     ], className='ten columns offset-by-one')

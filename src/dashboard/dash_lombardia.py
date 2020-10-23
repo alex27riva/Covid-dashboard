@@ -81,7 +81,7 @@ app.layout = html.Div(  # main div
 
         ], className='row'),
 
-        html.Div([  # first chart row
+        html.Div([  # andamento contagi, % casi tamponi
             html.Div([
                 dcc.Graph(
                     id='andamento-contagi',
@@ -106,7 +106,11 @@ app.layout = html.Div(  # main div
                     config=chart_config
                 )
 
-            ], className='six columns'),
+            ], className='twelve columns')
+
+        ], className='row'),
+
+        html.Div([
             html.Div([
                 dcc.Graph(
                     id='perc-casi-tamponi',
@@ -213,6 +217,12 @@ app.layout = html.Div(  # main div
             ], className='four columns'),
 
         ], className='row'),
+
+        html.Div([  # credits
+            html.Footer(children='© 2020 D. Tosi, A. Riva, A. Schiavone, Università Insubria. All rights reserved.',
+                        style=dict(font="14.0px 'Helvetica Light'"),
+                        className='six columns')
+        ], className='row')
 
     ], className='ten columns offset-by-one')  # twelve columns
 )
