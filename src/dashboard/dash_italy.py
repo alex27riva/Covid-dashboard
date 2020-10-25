@@ -366,11 +366,27 @@ app.layout = html.Div(  # main div
         html.Div([  # credits
             html.Footer(children='© 2020 D. Tosi, A. Riva, A. Schiavone, Università Insubria. All rights reserved.',
                         style=dict(font="14.0px 'Helvetica Light'"),
-                        className='six columns')
+                        className='nine columns'),
+            html.Button('Aggiorna',
+                        id='aggiorna',
+                        n_clicks=0,
+                        className='three columns')
+
         ], className='row')
 
     ], className='ten columns offset-by-one')
 )
+
+
+# @app.callback(
+#     Output('Output-1', 'children'),
+#     Input('aggiorna', 'n_clicks'))
+# def update_output(n_clicks, value):
+#     print('The input value was "{}" and the button has been clicked {} times'.format(
+#         value,
+#         n_clicks
+#     ))
+
 
 if __name__ == '__main__':
     app.run_server(debug=True)
