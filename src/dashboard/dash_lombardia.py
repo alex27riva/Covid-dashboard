@@ -9,6 +9,7 @@ import pandas
 # data URL
 url = 'https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-regioni/dpc-covid19-ita-regioni.csv'
 today = date.today()
+REF_TAMP = 9000  # reference value
 
 # read csv for url
 df = pandas.read_csv(url)
@@ -58,6 +59,9 @@ df['nuovi_decessi_avg'] = df['nuovi_decessi'].rolling(7).mean()
 df['totale_ospedalizzati_avg'] = df['totale_ospedalizzati'].rolling(7).mean()
 df['perc_positivi_tamponi_avg'] = df['perc_positivi_tamponi'].rolling(3).mean()
 df['perc_positivi_test_avg'] = df['perc_positivi_test'].rolling(3).mean()
+
+# norm cases
+df['nuovi_casi_norm'] = df['nuovi_positivi'] * REF_TAMP / df['incr_tamponi']
 
 app.layout = html.Div(  # main div
     html.Div([
@@ -143,34 +147,35 @@ app.layout = html.Div(  # main div
                     config=chart_config
                 )
 
+            ], className='six columns'),
+            html.Div([
+                dcc.Graph(
+                    id='contagi-norm',
+                    figure={
+                        'data': [
+                            {'x': df['data'], 'y': df['nuovi_casi_norm'], 'type': 'bar',
+                             'name': 'Nuovi Casi norm.', 'line': dict(color='orange')}
+                        ],
+                        'layout': {
+                            'title': 'Nuovi casi normalizzati',
+                            'xaxis': {
+                                'type': 'date',
+                                'range': ['2020-09-02', today]
+                            },
+                            'yaxis': {
+                                'range': [75, 2000]  # hardcoded range, find better solution
+                            }
+                        }
+                    },
+                    config=chart_config
+
+                )
             ], className='six columns')
 
         ], className='row'),
 
         html.Div([  # second chart row
-            html.Div([
-                dcc.Graph(
-                    id='Terapia-intensiva',
-                    figure={
-                        'data': [
-                            {'x': df['data'], 'y': df['terapia_intensiva'], 'type': 'bar', 'name': 'Terapia Intensiva',
-                             'marker': dict(color='LightSalmon')},
-                            {'x': df['data'], 'y': df['terapia_intensiva_avg'], 'type': 'scatter',
-                             'line': dict(color='blue'),
-                             'name': 'Media 7 giorni'}
-                        ],
-                        'layout': {
-                            'title': 'Terapia intensiva',
-                            'xaxis': dict(
-                                rangeselector=dict(buttons=slider_button),
-                                rangeslider=dict(visible=False),
-                                type='date'
-                            )
-                        }
-                    },
-                    config=chart_config
-                )
-            ], className='four columns'),
+
             html.Div([
                 dcc.Graph(
                     id='totale-ospedalizzati',
@@ -190,7 +195,7 @@ app.layout = html.Div(  # main div
                     },
                     config=chart_config
                 )
-            ], className='four columns'),
+            ], className='six columns'),
             html.Div([
                 dcc.Graph(
                     id='decessi-giornalieri',
@@ -214,7 +219,33 @@ app.layout = html.Div(  # main div
                         'responsive': True
                     }
                 )
-            ], className='four columns'),
+            ], className='six columns'),
+
+        ], className='row'),
+        html.Div([
+            html.Div([
+                dcc.Graph(
+                    id='Terapia-intensiva',
+                    figure={
+                        'data': [
+                            {'x': df['data'], 'y': df['terapia_intensiva'], 'type': 'bar', 'name': 'Terapia Intensiva',
+                             'marker': dict(color='LightSalmon')},
+                            {'x': df['data'], 'y': df['terapia_intensiva_avg'], 'type': 'scatter',
+                             'line': dict(color='blue'),
+                             'name': 'Media 7 giorni'}
+                        ],
+                        'layout': {
+                            'title': 'Terapia intensiva',
+                            'xaxis': dict(
+                                rangeselector=dict(buttons=slider_button),
+                                rangeslider=dict(visible=False),
+                                type='date'
+                            )
+                        }
+                    },
+                    config=chart_config
+                )
+            ], className='twelve columns'),
 
         ], className='row'),
 

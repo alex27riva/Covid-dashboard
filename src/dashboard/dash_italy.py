@@ -6,6 +6,8 @@ import dash_core_components as dcc
 import dash_html_components as html
 import pandas
 
+# from dash.dependencies import Input, Output
+
 # data URL
 url = 'https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-andamento-nazionale/dpc-covid19-ita-andamento' \
       '-nazionale.csv'
@@ -370,7 +372,7 @@ app.layout = html.Div(  # main div
             html.Button('Aggiorna',
                         id='aggiorna',
                         n_clicks=0,
-                        className='three columns')
+                        className='two columns')
 
         ], className='row')
 
