@@ -17,7 +17,10 @@ df = df.loc[df['denominazione_regione'] == 'Lombardia']
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets,
+                meta_tags=[{'name': 'viewport',
+                            'content': 'width=device-width, initial-scale=1.0, maximum-scale=1.2, minimum-scale=0.5'}]
+                )
 app.title = 'Dashboard Lombardia'
 
 # chart config
@@ -255,7 +258,7 @@ app.layout = html.Div(  # main div
                         className='six columns')
         ], className='row')
 
-    ], className='ten columns offset-by-one')  # twelve columns
+    ], className='ten columns offset-by-one')
 )
 
 if __name__ == '__main__':

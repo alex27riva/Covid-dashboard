@@ -85,24 +85,24 @@ refresh_data()
 
 app.layout = html.Div(  # main div
     html.Div([
-        html.Div([
-            html.Img(
-                src='https://www.uninsubria.it/sites/all/themes/uninsubria/logo.png',
-                className='three columns',
-                style={
-                    'height': '8%',
-                    'width': '8%',
-                    'float': 'right',
-                    'position': 'relative',
-                },
-            ),
-            html.H1(children='Dashboard Italia',
-                    className='nine columns'),
-
-            html.Div(children='Situazione Covid-19 in Italia',
-                     className='nine columns')
-
-        ], className='row'),
+        # html.Div([
+        #     html.Img(
+        #         src='https://www.uninsubria.it/sites/all/themes/uninsubria/logo.png',
+        #         className='three columns',
+        #         style={
+        #             'height': '8%',
+        #             'width': '8%',
+        #             'float': 'right',
+        #             'position': 'relative',
+        #         },
+        #     ),
+        #     html.H1(children='Dashboard Italia',
+        #             className='nine columns'),
+        #
+        #     html.Div(children='Situazione Covid-19 in Italia',
+        #              className='nine columns')
+        #
+        # ], className='row'),
 
         html.Div([  # nuovi positivi, casi totali,
             html.Div([
@@ -266,7 +266,7 @@ app.layout = html.Div(  # main div
                              'name': 'Nuovi decessi (media 7 giorni)'}
                         ],
                         'layout': {
-                            'title': 'Media mobile a 7gg: Decessi giornalieri vs. Contagi giornalieri',
+                            'title': 'Media 7gg: Decessi giornalieri vs. Contagi giornalieri',
                             'xaxis': {
                                 'type': 'date',
                                 'range': ['2020-04-22', today]
@@ -300,14 +300,14 @@ app.layout = html.Div(  # main div
 
                             {'x': df['data'], 'y': df['rolling_tested'], 'type': 'scatter',
                              'line': dict(color='orange'),
-                             'name': 'Media mobile (% casi testati)'},
+                             'name': 'Media (% casi testati)'},
                             {'x': df['data'], 'y': df['rolling_swabs_tested'], 'type': 'scatter', 'yaxis': 'y2',
                              'line': dict(color='blue'),
-                             'name': 'Media mobile (% tamp totali - casi testati)'}
+                             'name': 'Media (% tamp totali - casi testati)'}
 
                         ],
                         'layout': {
-                            'title': 'Rapporto (%) Nuovi Positivi / Casi Testati tramite Tamponi',
+                            'title': '(%) Nuovi Positivi / Casi Testati con tamponi',
                             'xaxis': {
                                 'type': 'date',
                                 'range': ['2020-04-22', today]
@@ -367,20 +367,19 @@ app.layout = html.Div(  # main div
 
         ], className='row'),
 
-        html.Div([  # credits
-            html.Footer(children='© 2020 D. Tosi, A. Riva, A. Schiavone, Università Insubria. All rights reserved.',
-                        style=dict(font="14.0px 'Helvetica Light'"),
-                        className='nine columns'),
-            html.Button('Aggiorna',
-                        id='aggiorna',
-                        n_clicks=0,
-                        className='two columns')
-
-        ], className='row')
+        # html.Div([  # credits
+        #     html.Footer(children='© 2020 D. Tosi, A. Riva, A. Schiavone, Università Insubria. All rights reserved.',
+        #                 style=dict(font="14.0px 'Helvetica Light'"),
+        #                 className='nine columns'),
+        #     html.Button('Aggiorna',
+        #                 id='aggiorna',
+        #                 n_clicks=0,
+        #                 className='two columns')
+        #
+        # ], className='row')
 
     ], className='ten columns offset-by-one')
 )
-
 
 # @app.callback(
 #     Output('Output-1', 'children'),
