@@ -104,7 +104,7 @@ app.layout = html.Div(  # main div
                              'name': 'Media 7 giorni'}
                         ],
                         'layout': {
-                            'title': 'Andamento dei contagi Lombardia',
+                            'title': 'Andamento dei contagi',
                             'xaxis': dict(
                                 rangeselector=dict(buttons=slider_button),
                                 rangeslider=dict(visible=False),
@@ -137,10 +137,13 @@ app.layout = html.Div(  # main div
                              'name': 'Totale casi (media 3gg)'}
                         ],
                         'layout': {
-                            'title': '% Nuovi Casi / Test con tamponi in Regione Lombardia',
+                            'title': '% Nuovi Casi / Test tramite tamponi',
                             'xaxis': {
                                 'type': 'date',
-                                'range': ['2020-04-22', today]
+                                'range': ['2020-04-22', today],
+                                'rangeselector': dict(buttons=slider_button),
+                                'rangeslider': dict(visible=False)
+
                             },
                             'yaxis': {
                                 'range': [0, 30],
@@ -165,10 +168,13 @@ app.layout = html.Div(  # main div
                             'title': 'Nuovi casi normalizzati',
                             'xaxis': {
                                 'type': 'date',
-                                'range': ['2020-09-02', today]
+                                'range': ['2020-04-22', today],
+                                'rangeselector': dict(buttons=slider_button),
+                                'rangeslider': dict(visible=False)
+
                             },
                             'yaxis': {
-                                'range': [75, 2000]  # hardcoded range, find better solution
+                               'range': [75, 2200]  # hardcoded range, find better solution
                             }
                         }
                     },
@@ -252,13 +258,7 @@ app.layout = html.Div(  # main div
                 )
             ], className='twelve columns'),
 
-        ], className='row'),
-
-        # html.Div([  # credits
-        #     html.Footer(children='© 2020 D. Tosi, A. Riva, A. Schiavone, Università Insubria. All rights reserved.',
-        #                 style=dict(font="14.0px 'Helvetica Light'"),
-        #                 className='six columns')
-        # ], className='row')
+        ], className='row')
 
     ], className='ten columns offset-by-one')
 )

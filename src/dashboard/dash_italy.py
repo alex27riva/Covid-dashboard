@@ -268,7 +268,7 @@ app.layout = html.Div(  # main div
                              'name': 'Nuovi decessi (media 7 giorni)'}
                         ],
                         'layout': {
-                            'title': 'Media 7gg: Decessi giornalieri vs. Contagi giornalieri',
+                            'title': 'Media 7gg: Decessi giorn. vs. Contagi giorn.',
                             'xaxis': {
                                 'type': 'date',
                                 'range': ['2020-04-22', today]
