@@ -15,8 +15,10 @@ today = date.today()
 df = pandas.read_csv(url)
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+plotly_js_minified = ['https://cdn.plot.ly/plotly-basic-latest.min.js']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets,
+                external_scripts=plotly_js_minified,
                 meta_tags=[{'name': 'viewport',
                             'content': 'width=device-width, initial-scale=0.8, maximum-scale=1.2, minimum-scale=0.5'}])
 app.title = 'Dashboard Italia'
