@@ -26,7 +26,8 @@ app.title = 'Dashboard Italia'
 # chart config
 chart_config = {'displaylogo': False,
                 'displayModeBar': False,
-                'responsive': True
+                'responsive': True,
+                # 'staticPlot': True,
                 }
 
 # slider buttons
