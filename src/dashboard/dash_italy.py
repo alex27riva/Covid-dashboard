@@ -6,8 +6,6 @@ import dash_core_components as dcc
 import dash_html_components as html
 import pandas
 
-# from dash.dependencies import Input, Output
-
 # data URL
 url = 'https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-andamento-nazionale/dpc-covid19-ita-andamento' \
       '-nazionale.csv'
@@ -26,8 +24,7 @@ app.title = 'Dashboard Italia'
 # chart config
 chart_config = {'displaylogo': False,
                 'displayModeBar': False,
-                'responsive': True,
-                # 'staticPlot': True,
+                'responsive': True
                 }
 
 # slider buttons
@@ -47,7 +44,7 @@ slider_button = list([
     dict(step="all")
 ])
 
-# costants
+# constants
 MIN_DELTA_TAMP = 964  # =MIN(Q$7:Q$119)    Q = delta_tamp
 REF_TAMP = 48000  # reference value
 
@@ -88,25 +85,6 @@ refresh_data()
 
 app.layout = html.Div(  # main div
     html.Div([
-        # html.Div([
-        #     html.Img(
-        #         src='https://www.uninsubria.it/sites/all/themes/uninsubria/logo.png',
-        #         className='three columns',
-        #         style={
-        #             'height': '8%',
-        #             'width': '8%',
-        #             'float': 'right',
-        #             'position': 'relative',
-        #         },
-        #     ),
-        #     html.H1(children='Dashboard Italia',
-        #             className='nine columns'),
-        #
-        #     html.Div(children='Situazione Covid-19 in Italia',
-        #              className='nine columns')
-        #
-        # ], className='row'),
-
         html.Div([  # nuovi positivi, casi totali,
             html.Div([
                 dcc.Graph(
@@ -199,7 +177,7 @@ app.layout = html.Div(  # main div
 
         ], className='row'),
 
-        html.Div([  # nuovi casi / decessi
+        html.Div([  # nuovi casi norm / ospedalizzati
             html.Div([
                 dcc.Graph(
                     id='nuovi-casi-norm',
@@ -372,16 +350,6 @@ app.layout = html.Div(  # main div
 
     ], className='ten columns offset-by-one')
 )
-
-# @app.callback(
-#     Output('Output-1', 'children'),
-#     Input('aggiorna', 'n_clicks'))
-# def update_output(n_clicks, value):
-#     print('The input value was "{}" and the button has been clicked {} times'.format(
-#         value,
-#         n_clicks
-#     ))
-
 
 if __name__ == '__main__':
     app.run_server(debug=True)
