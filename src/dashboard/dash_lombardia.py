@@ -174,7 +174,7 @@ app.layout = html.Div(  # main div
 
                             },
                             'yaxis': {
-                               'range': [75, 2200]  # hardcoded range, find better solution
+                                'range': [75, 2200]  # hardcoded range, find better solution
                             }
                         }
                     },
@@ -194,6 +194,9 @@ app.layout = html.Div(  # main div
                         'data': [
                             {'x': df['data'], 'y': df['totale_ospedalizzati'], 'type': 'bar',
                              'name': 'Ospedalizzazioni'},
+                            {'x': df['data'], 'y': df['totale_ospedalizzati_avg'], 'type': 'scatter',
+                             'line': dict(color='orange'),
+                             'name': 'Media 7 giorni'}
                         ],
                         'layout': {
                             'title': 'Totale ospedalizzati',
@@ -212,8 +215,11 @@ app.layout = html.Div(  # main div
                     id='decessi-giornalieri',
                     figure={
                         'data': [
-                            {'x': df['data'], 'y': df['nuovi_decessi'], 'type': 'bar',
+                            {'x': df['data'], 'y': df['nuovi_decessi'], 'type': 'bar', 'name': 'Decessi',
                              'marker': dict(color='grey')},
+                            {'x': df['data'], 'y': df['nuovi_decessi_avg'], 'type': 'scatter',
+                             'line': dict(color='blue'),
+                             'name': 'Media 7 giorni'}
                         ],
                         'layout': {
                             'title': 'Decessi giornalieri',

@@ -236,7 +236,7 @@ app.layout = html.Div(  # main div
                              'name': 'Media 7 giorni'}
                         ],
                         'layout': {
-                            'title': 'Terapia intensiva e casi gravi',
+                            'title': 'Terapia intensiva e Ospedalizzati',
                             'xaxis': dict(
                                 rangeselector=dict(buttons=slider_button),
                                 rangeslider=dict(visible=False),
@@ -369,17 +369,6 @@ app.layout = html.Div(  # main div
             ], className='twelve columns')
 
         ], className='row'),
-
-        # html.Div([  # credits
-        #     html.Footer(children='© 2020 D. Tosi, A. Riva, A. Schiavone, Università Insubria. All rights reserved.',
-        #                 style=dict(font="14.0px 'Helvetica Light'"),
-        #                 className='nine columns'),
-        #     html.Button('Aggiorna',
-        #                 id='aggiorna',
-        #                 n_clicks=0,
-        #                 className='two columns')
-        #
-        # ], className='row')
 
     ], className='ten columns offset-by-one')
 )

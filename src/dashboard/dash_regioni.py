@@ -140,6 +140,7 @@ app.layout = html.Div(  # main div
             ], className='six columns'),
 
         ], className='row'),
+
         html.Div([
             html.Div([
                 dcc.Graph(
