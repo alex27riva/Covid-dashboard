@@ -26,7 +26,7 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets,
                 meta_tags=[{'name': 'viewport',
                             'content': 'width=device-width, initial-scale=1.0, maximum-scale=1.2, minimum-scale=0.5'}]
                 )
-app.title = 'Dashboard Lombardia'
+app.title = 'Dashboard Regioni'
 
 # chart config
 chart_config = {'displaylogo': False,
@@ -50,26 +50,6 @@ slider_button = list([
          stepmode="backward"),
     dict(step="all")
 ])
-
-# data calculation
-df['terapia_intensiva_avg'] = df['terapia_intensiva'].rolling(7).mean()
-df['nuovi_decessi'] = df.deceduti.diff().fillna(df.deceduti)
-
-# percentage swab - cases
-df['delta_casi_testati'] = df.casi_testati.diff().fillna(df.casi_testati)
-df['incr_tamponi'] = df.tamponi.diff().fillna(df.tamponi)
-df['perc_positivi_tamponi'] = (df['nuovi_positivi'] / df['incr_tamponi']) * 100  # AB
-df['perc_positivi_test'] = (df['nuovi_positivi'] / df['delta_casi_testati']) * 100  # AD
-
-# rolling averages
-df['nuovi_positivi_avg'] = df['nuovi_positivi'].rolling(7).mean()
-df['nuovi_decessi_avg'] = df['nuovi_decessi'].rolling(7).mean()
-df['totale_ospedalizzati_avg'] = df['totale_ospedalizzati'].rolling(7).mean()
-df['perc_positivi_tamponi_avg'] = df['perc_positivi_tamponi'].rolling(3).mean()
-df['perc_positivi_test_avg'] = df['perc_positivi_test'].rolling(3).mean()
-
-# norm cases
-df['nuovi_casi_norm'] = df['nuovi_positivi'] * REF_TAMP / df['incr_tamponi']
 
 
 def calculate_data(dframe):
@@ -115,7 +95,7 @@ app.layout = html.Div(  # main div
 
             ], className='four columns offset-by-three')
         ], className='row'),
-        html.Div([  # andamento contagi, % casi tamponi
+        html.Div([  # andamento contagi
             html.Div([
                 dcc.Graph(
                     id='andamento-contagi',
@@ -136,109 +116,39 @@ app.layout = html.Div(  # main div
                 )
 
             ], className='six columns'),
-            html.Div([
-                dcc.Graph(
-                    id='contagi-norm',
-                    figure={
-                        'data': [
-                            {'x': df['data'], 'y': df['nuovi_casi_norm'], 'type': 'bar',
-                             'name': 'Nuovi Casi norm.', 'line': dict(color='orange')}
-                        ],
-                        'layout': {
-                            'title': 'Nuovi casi normalizzati',
-                            'xaxis': {
-                                'type': 'date',
-                                'range': ['2020-04-22', today],
-                                'rangeselector': dict(buttons=slider_button),
-                                'rangeslider': dict(visible=False)
-
-                            },
-                            'yaxis': {
-                                'range': [75, 2200]  # hardcoded range, find better solution
-                            }
-                        }
-                    },
-                    config=chart_config
-
-                )
-            ], className='six columns')
-
         ], className='row'),
 
-        # html.Div([  # second chart row
-        #
-        #     html.Div([
-        #         dcc.Graph(
-        #             id='totale-ospedalizzati',
-        #             figure={
-        #                 'data': [
-        #                     {'x': df['data'], 'y': df['totale_ospedalizzati'], 'type': 'bar',
-        #                      'name': 'Ospedalizzazioni'},
-        #                 ],
-        #                 'layout': {
-        #                     'title': 'Totale ospedalizzati',
-        #                     'xaxis': dict(
-        #                         rangeselector=dict(buttons=slider_button),
-        #                         rangeslider=dict(visible=False),
-        #                         type='date'
-        #                     )
-        #                 }
-        #             },
-        #             config=chart_config
-        #         )
-        #     ], className='six columns'),
-        #     html.Div([
-        #         dcc.Graph(
-        #             id='decessi-giornalieri',
-        #             figure={
-        #                 'data': [
-        #                     {'x': df['data'], 'y': df['nuovi_decessi'], 'type': 'bar',
-        #                      'marker': dict(color='grey')},
-        #                 ],
-        #                 'layout': {
-        #                     'title': 'Decessi giornalieri',
-        #                     'xaxis': dict(
-        #                         rangeselector=dict(buttons=slider_button),
-        #                         rangeslider=dict(visible=False),
-        #                         type='date'
-        #                     )
-        #                 }
-        #             },
-        #             config={
-        #                 'displaylogo': False,
-        #                 'displayModeBar': False,
-        #                 'responsive': True
-        #             }
-        #         )
-        #     ], className='six columns'),
-        #
-        # ], className='row'),
-        # html.Div([
-        #     html.Div([
-        #         dcc.Graph(
-        #             id='Terapia-intensiva',
-        #             figure={
-        #                 'data': [
-        #                     {'x': df['data'], 'y': df['terapia_intensiva'], 'type': 'bar', 'name': 'Terapia Intensiva',
-        #                      'marker': dict(color='LightSalmon')},
-        #                     {'x': df['data'], 'y': df['terapia_intensiva_avg'], 'type': 'scatter',
-        #                      'line': dict(color='blue'),
-        #                      'name': 'Media 7 giorni'}
-        #                 ],
-        #                 'layout': {
-        #                     'title': 'Terapia intensiva',
-        #                     'xaxis': dict(
-        #                         rangeselector=dict(buttons=slider_button),
-        #                         rangeslider=dict(visible=False),
-        #                         type='date'
-        #                     )
-        #                 }
-        #             },
-        #             config=chart_config
-        #         )
-        #     ], className='twelve columns'),
-        #
-        # ], className='row')
+        html.Div([  # second chart row
+
+            html.Div([
+                dcc.Graph(
+                    id='totale-ospedalizzati',
+
+                    config=chart_config
+                )
+            ], className='six columns'),
+            html.Div([
+                dcc.Graph(
+                    id='decessi-giornalieri',
+
+                    config={
+                        'displaylogo': False,
+                        'displayModeBar': False,
+                        'responsive': True
+                    }
+                )
+            ], className='six columns'),
+
+        ], className='row'),
+        html.Div([
+            html.Div([
+                dcc.Graph(
+                    id='terapia-intensiva',
+                    config=chart_config
+                )
+            ], className='twelve columns'),
+
+        ], className='row')
 
     ], className='ten columns offset-by-one')
 )
@@ -247,8 +157,9 @@ app.layout = html.Div(  # main div
 @app.callback(
     Output('andamento-contagi', 'figure'),
     [Input('region_select', 'value')])
-def update_andamento_contagi(region):
-    local_df = df.loc[df['denominazione_regione'] == region]
+def update_andamento_contagi(regione):
+    reg_df = df.loc[df['denominazione_regione'] == regione]
+    local_df = calculate_data(reg_df.copy())
     local_df['nuovi_positivi_avg'] = local_df['nuovi_positivi'].rolling(7).mean()
     figure = {
         'data': [
@@ -274,7 +185,7 @@ def update_andamento_contagi(region):
     [Input('region_select', 'value')])
 def update_perc_casi_tamponi(regione):
     reg_df = df.loc[df['denominazione_regione'] == regione]
-    local_df = calculate_data(reg_df)
+    local_df = calculate_data(reg_df.copy())
 
     figure = {
         'data': [
@@ -303,6 +214,78 @@ def update_perc_casi_tamponi(regione):
                 'tickprefix': '% '
             }
 
+        }
+    }
+    return figure
+
+
+@app.callback(
+    Output('totale-ospedalizzati', 'figure'),
+    [Input('region_select', 'value')])
+def update_perc_casi_tamponi(regione):
+    reg_df = df.loc[df['denominazione_regione'] == regione]
+    local_df = calculate_data(reg_df.copy())
+    figure = {
+        'data': [
+            {'x': local_df['data'], 'y': local_df['totale_ospedalizzati'], 'type': 'bar',
+             'name': 'Ospedalizzazioni'},
+        ],
+        'layout': {
+            'title': 'Totale ospedalizzati',
+            'xaxis': dict(
+                rangeselector=dict(buttons=slider_button),
+                rangeslider=dict(visible=False),
+                type='date'
+            )
+        }
+    }
+    return figure
+
+
+@app.callback(
+    Output('decessi-giornalieri', 'figure'),
+    [Input('region_select', 'value')])
+def update_perc_casi_tamponi(regione):
+    reg_df = df.loc[df['denominazione_regione'] == regione]
+    local_df = calculate_data(reg_df.copy())
+    figure = {
+        'data': [
+            {'x': local_df['data'], 'y': local_df['nuovi_decessi'], 'type': 'bar',
+             'marker': dict(color='grey')},
+        ],
+        'layout': {
+            'title': 'Decessi giornalieri',
+            'xaxis': dict(
+                rangeselector=dict(buttons=slider_button),
+                rangeslider=dict(visible=False),
+                type='date'
+            )
+        }
+    }
+    return figure
+
+
+@app.callback(
+    Output('terapia-intensiva', 'figure'),
+    [Input('region_select', 'value')])
+def update_perc_casi_tamponi(regione):
+    reg_df = df.loc[df['denominazione_regione'] == regione]
+    local_df = calculate_data(reg_df.copy())
+    figure = {
+        'data': [
+            {'x': local_df['data'], 'y': local_df['terapia_intensiva'], 'type': 'bar', 'name': 'Terapia Intensiva',
+             'marker': dict(color='LightSalmon')},
+            {'x': local_df['data'], 'y': local_df['terapia_intensiva_avg'], 'type': 'scatter',
+             'line': dict(color='blue'),
+             'name': 'Media 7 giorni'}
+        ],
+        'layout': {
+            'title': 'Terapia intensiva',
+            'xaxis': dict(
+                rangeselector=dict(buttons=slider_button),
+                rangeslider=dict(visible=False),
+                type='date'
+            )
         }
     }
     return figure
