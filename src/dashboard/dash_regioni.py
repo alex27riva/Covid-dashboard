@@ -11,12 +11,11 @@ from dash.dependencies import Input, Output
 url = 'https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-regioni/dpc-covid19-ita-regioni.csv'
 today = date.today()
 REF_TAMP = 9000  # reference value
-regions = ['Abruzzo', 'Basilicata', 'Calabria', 'Campania', 'Emilia-Romagna', 'Friuli Venezia Giulia', 'Lazio',
-           'Liguria', 'Lombardia', 'Marche', 'Molise', 'P.A. Bolzano', 'P.A. Trento', 'Piemonte', 'Puglia',
-           'Sardegna', 'Sicilia', 'Toscana', 'Umbria', "Valle d'Aosta", 'Veneto']
 
 # read csv for url
 df = pandas.read_csv(url)
+# get a list off all regions
+regions = df['denominazione_regione'].tolist()
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 plotly_js_minified = ['https://cdn.plot.ly/plotly-basic-latest.min.js']
@@ -52,30 +51,30 @@ slider_button = list([
 ])
 
 
-def calculate_data(dframe):
+def calculate_data(data):
     # data calculation
-    dframe['terapia_intensiva_avg'] = dframe['terapia_intensiva'].rolling(7).mean()
-    dframe['nuovi_decessi'] = dframe.deceduti.diff().fillna(dframe.deceduti)
+    data['terapia_intensiva_avg'] = data['terapia_intensiva'].rolling(7).mean()
+    data['nuovi_decessi'] = data.deceduti.diff().fillna(data.deceduti)
 
     # percentage swab - cases
-    dframe['delta_casi_testati'] = dframe.casi_testati.diff().fillna(dframe.casi_testati)
-    dframe['incr_tamponi'] = dframe.tamponi.diff().fillna(dframe.tamponi)
-    dframe['perc_positivi_tamponi'] = (dframe['nuovi_positivi'] / dframe['incr_tamponi']) * 100  # AB
-    dframe['perc_positivi_test'] = (dframe['nuovi_positivi'] / dframe['delta_casi_testati']) * 100  # AD
+    data['delta_casi_testati'] = data.casi_testati.diff().fillna(data.casi_testati)
+    data['incr_tamponi'] = data.tamponi.diff().fillna(data.tamponi)
+    data['perc_positivi_tamponi'] = (data['nuovi_positivi'] / data['incr_tamponi']) * 100  # AB
+    data['perc_positivi_test'] = (data['nuovi_positivi'] / data['delta_casi_testati']) * 100  # AD
 
     # rolling averages
-    dframe['nuovi_positivi_avg'] = dframe['nuovi_positivi'].rolling(7).mean()
-    dframe['nuovi_decessi_avg'] = dframe['nuovi_decessi'].rolling(7).mean()
-    dframe['totale_ospedalizzati_avg'] = dframe['totale_ospedalizzati'].rolling(7).mean()
-    dframe['perc_positivi_tamponi_avg'] = dframe['perc_positivi_tamponi'].rolling(3).mean()
-    dframe['perc_positivi_test_avg'] = dframe['perc_positivi_test'].rolling(3).mean()
+    data['nuovi_positivi_avg'] = data['nuovi_positivi'].rolling(7).mean()
+    data['nuovi_decessi_avg'] = data['nuovi_decessi'].rolling(7).mean()
+    data['totale_ospedalizzati_avg'] = data['totale_ospedalizzati'].rolling(7).mean()
+    data['perc_positivi_tamponi_avg'] = data['perc_positivi_tamponi'].rolling(3).mean()
+    data['perc_positivi_test_avg'] = data['perc_positivi_test'].rolling(3).mean()
 
     # norm cases
-    dframe['nuovi_casi_norm'] = dframe['nuovi_positivi'] * REF_TAMP / dframe['incr_tamponi']
-    return dframe
+    data['nuovi_casi_norm'] = data['nuovi_positivi'] * REF_TAMP / data['incr_tamponi']
+    return data
 
 
-def get_lista():
+def get_dropdown_data():
     selections = []
     for reg in regions:
         selections.append(dict(label=reg, value=reg))
@@ -87,10 +86,12 @@ app.layout = html.Div(  # main div
         html.Div([
             html.Div([
                 dcc.Dropdown(id='region_select',
-                             options=get_lista(),
+                             options=get_dropdown_data(),
+                             clearable=False,
                              placeholder='Seleziona una regione...',
                              persistence=True,
-                             persistence_type='session'
+                             persistence_type='session',
+                             value='Lombardia'
                              )
 
             ], className='four columns offset-by-three')
@@ -99,7 +100,7 @@ app.layout = html.Div(  # main div
             html.Div([
                 dcc.Graph(
                     id='andamento-contagi',
-
+                    figure={},
                     config=chart_config
                 )
 
@@ -111,7 +112,7 @@ app.layout = html.Div(  # main div
             html.Div([
                 dcc.Graph(
                     id='perc-casi-tamponi',
-
+                    figure={},
                     config=chart_config
                 )
 
@@ -123,14 +124,14 @@ app.layout = html.Div(  # main div
             html.Div([
                 dcc.Graph(
                     id='totale-ospedalizzati',
-
+                    figure={},
                     config=chart_config
                 )
             ], className='six columns'),
             html.Div([
                 dcc.Graph(
                     id='decessi-giornalieri',
-
+                    figure={},
                     config={
                         'displaylogo': False,
                         'displayModeBar': False,
@@ -145,6 +146,7 @@ app.layout = html.Div(  # main div
             html.Div([
                 dcc.Graph(
                     id='terapia-intensiva',
+                    figure={},
                     config=chart_config
                 )
             ], className='twelve columns'),
