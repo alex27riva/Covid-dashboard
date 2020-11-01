@@ -81,275 +81,275 @@ def refresh_data():
     df['rolling_swabs_tested'] = df['perc_tamponi_meno_testati'].rolling(7).mean()
 
 
-refresh_data()
-
-app.layout = html.Div(  # main div
-    html.Div([
-        html.Div([  # nuovi positivi, casi totali,
-            html.Div([
-                dcc.Graph(
-                    id='nuovi_positivi',
-                    figure={
-                        'data': [
-                            {'x': df['data'], 'y': df['nuovi_positivi'], 'type': 'bar', 'name': 'Casi totali'},
-                        ],
-                        'layout': {
-                            'title': 'Nuovi Casi',
-                            'xaxis': dict(
-                                rangeselector=dict(buttons=slider_button),
-                                rangeslider=dict(visible=False),
-                                type='date'
-                            )
-                        }
-                    },
-                    config=chart_config
-
-                )
-
-            ], className='six columns'),
-            html.Div([
-                dcc.Graph(
-                    id='Casi-totali',
-                    figure={
-                        'data': [
-                            {'x': df['data'], 'y': df['totale_casi'], 'type': 'bar', 'name': 'Casi totali'},
-                        ],
-                        'layout': {
-                            'title': 'Totale Casi',
-                            'xaxis': dict(
-                                rangeselector=dict(buttons=slider_button),
-                                rangeslider=dict(visible=False),
-                                type='date'
-                            )
-                        }
-                    },
-                    config=chart_config
-                )
-            ], className='six columns'),
-
-        ], className='row'),
-
-        html.Div([  # isolamento, terapia intensiva
-            html.Div([
-                dcc.Graph(
-                    id='isolamento-domiciliare',
-                    figure={
-                        'data': [
-                            {'x': df['data'], 'y': df['isolamento_domiciliare'], 'type': 'bar',
-                             'marker': dict(color='grey')},
-                        ],
-                        'layout': {
-                            'title': 'Isolamento domiciliare',
-                            'xaxis': dict(
-                                rangeselector=dict(buttons=slider_button),
-                                rangeslider=dict(visible=False),
-                                type='date'
-                            )
-                        }
-                    },
-                    config=chart_config
-                )
-            ], className='six columns'),
-
-            html.Div([
-                dcc.Graph(
-                    id='Terapia-intensiva',
-                    figure={
-                        'data': [
-                            {'x': df['data'], 'y': df['terapia_intensiva'], 'type': 'bar', 'name': 'Terapia Intensiva',
-                             'marker': dict(color='RebeccaPurple')},
-                            {'x': df['data'], 'y': df['terapia_intensiva_avg'], 'type': 'scatter',
-                             'line': dict(color='blue'),
-                             'name': 'Media 7 giorni'}
-                        ],
-                        'layout': {
-                            'title': 'Terapia intensiva',
-                            'xaxis': dict(
-                                rangeselector=dict(buttons=slider_button),
-                                rangeslider=dict(visible=False),
-                                type='date'
-                            )
-                        }
-                    },
-                    config=chart_config
-                )
-            ], className='six columns'),
-
-        ], className='row'),
-
-        html.Div([  # nuovi casi norm / ospedalizzati
-            html.Div([
-                dcc.Graph(
-                    id='nuovi-casi-norm',
-                    figure={
-                        'data': [
-                            {'x': df['data'], 'y': df['nuovi_casi_norm'], 'type': 'bar', 'name': 'Nuovi casi norm.',
-                             'marker': dict(color='DarkOliveGreen')},
-                            {'x': df['data'], 'y': df['nuovi_casi_norm_avg'], 'type': 'scatter', 'name': 'Media 7gg'}
-                        ],
-                        'layout': {
-                            'title': 'Nuovi casi normalizzati',
-                            'xaxis': dict(
-                                rangeselector=dict(buttons=slider_button),
-                                rangeslider=dict(visible=False),
-                                type='date'
-                            )
-                        }
-                    },
-                    config=chart_config
-                )
-
-            ], className='six columns'),
-
-            html.Div([
-                dcc.Graph(
-                    id='totale-ospedalizzati',
-                    figure={
-                        'data': [
-                            {'x': df['data'], 'y': df['totale_ospedalizzati'], 'type': 'bar',
-                             'name': 'Totale ospedalizzati',
-                             'marker': dict(color='DarkCyan')},
-                            {'x': df['data'], 'y': df['totale_ospedalizzati_avg'], 'type': 'scatter',
-                             'line': dict(color='blue', dash='dot'),
-                             'name': 'Media 7 giorni'}
-                        ],
-                        'layout': {
-                            'title': 'Terapia intensiva e Ospedalizzati',
-                            'xaxis': dict(
-                                rangeselector=dict(buttons=slider_button),
-                                rangeslider=dict(visible=False),
-                                type='date'
-                            )
-                        }
-                    },
-                    config=chart_config
-                )
-            ], className='six columns')
-        ], className='row'),
-
-        html.Div([  # second chart row
-            html.Div([
-                dcc.Graph(
-                    id='rapporto-positivi-tamponi',
-                    figure={
-                        'data': [
-                            {'x': df['data'], 'y': df['nuovi_positivi'], 'type': 'scatter',
-                             'line': dict(color='orange', dash='dot'),
-                             'name': 'Nuovi casi'},
-                            {'x': df['data'], 'y': df['nuovi_decessi'], 'type': 'scatter', 'yaxis': 'y2',
-                             'line': dict(color='blue', dash='dot'),
-                             'name': 'Decessi giornalieri'},
-                            {'x': df['data'], 'y': df['nuovi_positivi_avg'], 'type': 'scatter',
-                             'line': dict(color='orange'),
-                             'name': 'Nuovi casi (media 7 giorni)'},
-                            {'x': df['data'], 'y': df['nuovi_decessi_avg'], 'type': 'scatter', 'yaxis': 'y2',
-                             'line': dict(color='blue'),
-                             'name': 'Nuovi decessi (media 7 giorni)'}
-                        ],
-                        'layout': {
-                            'title': 'Media 7gg: Decessi giorn. vs. Contagi giorn.',
-                            'xaxis': {
-                                'type': 'date',
-                                'range': ['2020-04-22', today]
-                            },
-                            'yaxis': {'rangemode': 'nonnegative'},
-                            'yaxis2': {
-                                'side': 'right',
-                                'overlaying': 'y',  # show both traces,
-                                'rangemode': 'nonnegative'
-
+def serve_layout():
+    refresh_data()
+    return html.Div(  # main div
+        html.Div([
+            html.Div([  # nuovi positivi, casi totali,
+                html.Div([
+                    dcc.Graph(
+                        id='nuovi_positivi',
+                        figure={
+                            'data': [
+                                {'x': df['data'], 'y': df['nuovi_positivi'], 'type': 'bar', 'name': 'Casi totali'},
+                            ],
+                            'layout': {
+                                'title': 'Nuovi Casi',
+                                'xaxis': dict(
+                                    rangeselector=dict(buttons=slider_button),
+                                    rangeslider=dict(visible=False),
+                                    type='date'
+                                )
                             }
+                        },
+                        config=chart_config
 
-                        }
-                    },
-                    config=chart_config
-                )
+                    )
 
-            ], className='six columns'),
-
-            html.Div([
-                dcc.Graph(
-                    id='rapporto-pos-tamponi',
-                    figure={
-                        'data': [
-                            {'x': df['data'], 'y': df['rapp_casi_test'], 'type': 'scatter',
-                             'line': dict(color='orange', dash='dot'),
-                             'name': '% Casi testati'},
-                            {'x': df['data'], 'y': df['perc_tamponi_meno_testati'], 'type': 'scatter', 'yaxis': 'y2',
-                             'line': dict(color='blue', dash='dot'),
-                             'name': '% Tamponi totali - Casi testati'},
-
-                            {'x': df['data'], 'y': df['rolling_tested'], 'type': 'scatter',
-                             'line': dict(color='orange'),
-                             'name': 'Media (% casi testati)'},
-                            {'x': df['data'], 'y': df['rolling_swabs_tested'], 'type': 'scatter', 'yaxis': 'y2',
-                             'line': dict(color='blue'),
-                             'name': 'Media (% tamp totali - casi testati)'}
-
-                        ],
-                        'layout': {
-                            'title': '(%) Nuovi Positivi / Casi Testati con tamponi',
-                            'xaxis': {
-                                'type': 'date',
-                                'range': ['2020-04-22', today]
-                            },
-                            'yaxis': {'rangemode': 'nonnegative'},
-                            'yaxis2': {
-                                'side': 'right',
-                                'overlaying': 'y',  # show both traces,
-                                'rangemode': 'nonnegative'
-
+                ], className='six columns'),
+                html.Div([
+                    dcc.Graph(
+                        id='Casi-totali',
+                        figure={
+                            'data': [
+                                {'x': df['data'], 'y': df['totale_casi'], 'type': 'bar', 'name': 'Casi totali'},
+                            ],
+                            'layout': {
+                                'title': 'Totale Casi',
+                                'xaxis': dict(
+                                    rangeselector=dict(buttons=slider_button),
+                                    rangeslider=dict(visible=False),
+                                    type='date'
+                                )
                             }
+                        },
+                        config=chart_config
+                    )
+                ], className='six columns'),
 
-                        }
-                    },
-                    config=chart_config
+            ], className='row'),
 
-                )
-
-            ], className='six columns')
-
-        ], className='row'),
-
-        html.Div([  # third chart row
-            html.Div([
-                dcc.Graph(
-                    id='nuovi-casi-vs-morti',
-                    figure={
-                        'data': [
-                            {'x': df['data'], 'y': df['nuovi_decessi'], 'type': 'bar', 'name': 'Nuovi decessi',
-                             'yaxis': 'y1', 'marker': dict(color='orange')},
-                            {'x': df['data'], 'y': df['nuovi_positivi'], 'type': 'scatter', 'yaxis': 'y2',
-                             'line': dict(color='blue'),
-                             'name': 'Nuovi casi'}
-                        ],
-                        'layout': {
-                            'title': 'Nuovi casi vs decessi',
-                            'xaxis': dict(
-                                rangeselector=dict(buttons=slider_button),
-                                rangeslider=dict(visible=True),
-                                type='date'
-                            ),
-                            'yaxis': {'rangemode': 'nonnegative',
-                                      },
-                            'yaxis2': {
-                                'side': 'right',
-                                'overlaying': 'y',  # show both traces,
-                                'rangemode': 'tozero'
-
+            html.Div([  # isolamento, terapia intensiva
+                html.Div([
+                    dcc.Graph(
+                        id='isolamento-domiciliare',
+                        figure={
+                            'data': [
+                                {'x': df['data'], 'y': df['isolamento_domiciliare'], 'type': 'bar',
+                                 'marker': dict(color='grey')},
+                            ],
+                            'layout': {
+                                'title': 'Isolamento domiciliare',
+                                'xaxis': dict(
+                                    rangeselector=dict(buttons=slider_button),
+                                    rangeslider=dict(visible=False),
+                                    type='date'
+                                )
                             }
+                        },
+                        config=chart_config
+                    )
+                ], className='six columns'),
 
-                        }
-                    },
-                    config=chart_config
-                )
+                html.Div([
+                    dcc.Graph(
+                        id='Terapia-intensiva',
+                        figure={
+                            'data': [
+                                {'x': df['data'], 'y': df['terapia_intensiva'], 'type': 'bar',
+                                 'name': 'Terapia Intensiva',
+                                 'marker': dict(color='RebeccaPurple')},
+                                {'x': df['data'], 'y': df['terapia_intensiva_avg'], 'type': 'scatter',
+                                 'line': dict(color='blue'),
+                                 'name': 'Media 7 giorni'}
+                            ],
+                            'layout': {
+                                'title': 'Terapia intensiva',
+                                'xaxis': dict(
+                                    rangeselector=dict(buttons=slider_button),
+                                    rangeslider=dict(visible=False),
+                                    type='date'
+                                )
+                            }
+                        },
+                        config=chart_config
+                    )
+                ], className='six columns'),
 
-            ], className='twelve columns')
+            ], className='row'),
 
-        ], className='row'),
+            html.Div([  # nuovi casi norm / ospedalizzati
+                html.Div([
+                    dcc.Graph(
+                        id='nuovi-casi-norm',
+                        figure={
+                            'data': [
+                                {'x': df['data'], 'y': df['nuovi_casi_norm'], 'type': 'bar', 'name': 'Nuovi casi norm.',
+                                 'marker': dict(color='DarkOliveGreen')},
+                                {'x': df['data'], 'y': df['nuovi_casi_norm_avg'], 'type': 'scatter',
+                                 'name': 'Media 7gg'}
+                            ],
+                            'layout': {
+                                'title': 'Nuovi casi normalizzati',
+                                'xaxis': dict(
+                                    rangeselector=dict(buttons=slider_button),
+                                    rangeslider=dict(visible=False),
+                                    type='date'
+                                )
+                            }
+                        },
+                        config=chart_config
+                    )
 
-    ], className='ten columns offset-by-one')
-)
+                ], className='six columns'),
+
+                html.Div([
+                    dcc.Graph(
+                        id='totale-ospedalizzati',
+                        figure={
+                            'data': [
+                                {'x': df['data'], 'y': df['totale_ospedalizzati'], 'type': 'bar',
+                                 'name': 'Totale ospedalizzati',
+                                 'marker': dict(color='DarkCyan')},
+                                {'x': df['data'], 'y': df['totale_ospedalizzati_avg'], 'type': 'scatter',
+                                 'line': dict(color='blue', dash='dot'),
+                                 'name': 'Media 7 giorni'}
+                            ],
+                            'layout': {
+                                'title': 'Terapia intensiva e Ospedalizzati',
+                                'xaxis': dict(
+                                    rangeselector=dict(buttons=slider_button),
+                                    rangeslider=dict(visible=False),
+                                    type='date'
+                                )
+                            }
+                        },
+                        config=chart_config
+                    )
+                ], className='six columns')
+            ], className='row'),
+
+            html.Div([  # second chart row
+                html.Div([
+                    dcc.Graph(
+                        id='rapporto-positivi-tamponi',
+                        figure={
+                            'data': [
+                                {'x': df['data'], 'y': df['nuovi_positivi'], 'type': 'scatter',
+                                 'line': dict(color='orange', dash='dot'),
+                                 'name': 'Nuovi casi'},
+                                {'x': df['data'], 'y': df['nuovi_decessi'], 'type': 'scatter', 'yaxis': 'y2',
+                                 'line': dict(color='blue', dash='dot'),
+                                 'name': 'Decessi giornalieri'},
+                                {'x': df['data'], 'y': df['nuovi_positivi_avg'], 'type': 'scatter',
+                                 'line': dict(color='orange'),
+                                 'name': 'Nuovi casi (media 7 giorni)'},
+                                {'x': df['data'], 'y': df['nuovi_decessi_avg'], 'type': 'scatter', 'yaxis': 'y2',
+                                 'line': dict(color='blue'),
+                                 'name': 'Nuovi decessi (media 7 giorni)'}
+                            ],
+                            'layout': {
+                                'title': 'Media 7gg: Decessi giorn. vs. Contagi giorn.',
+                                'xaxis': {
+                                    'type': 'date',
+                                    'range': ['2020-04-22', today]
+                                },
+                                'yaxis': {'rangemode': 'nonnegative'},
+                                'yaxis2': {
+                                    'side': 'right',
+                                    'overlaying': 'y',  # show both traces,
+                                    'rangemode': 'nonnegative'
+
+                                }
+                            }
+                        },
+                        config=chart_config
+                    )
+
+                ], className='six columns'),
+
+                html.Div([
+                    dcc.Graph(
+                        id='rapporto-pos-tamponi',
+                        figure={
+                            'data': [
+                                {'x': df['data'], 'y': df['rapp_casi_test'], 'type': 'scatter',
+                                 'line': dict(color='orange', dash='dot'),
+                                 'name': '% Casi testati'},
+                                {'x': df['data'], 'y': df['perc_tamponi_meno_testati'], 'type': 'scatter',
+                                 'yaxis': 'y2',
+                                 'line': dict(color='blue', dash='dot'),
+                                 'name': '% Tamponi totali - Casi testati'},
+
+                                {'x': df['data'], 'y': df['rolling_tested'], 'type': 'scatter',
+                                 'line': dict(color='orange'),
+                                 'name': 'Media (% casi testati)'},
+                                {'x': df['data'], 'y': df['rolling_swabs_tested'], 'type': 'scatter', 'yaxis': 'y2',
+                                 'line': dict(color='blue'),
+                                 'name': 'Media (% tamp totali - casi testati)'}
+
+                            ],
+                            'layout': {
+                                'title': '(%) Nuovi Positivi / Casi Testati con tamponi',
+                                'xaxis': {
+                                    'type': 'date',
+                                    'range': ['2020-04-22', today]
+                                },
+                                'yaxis': {'rangemode': 'nonnegative'},
+                                'yaxis2': {
+                                    'side': 'right',
+                                    'overlaying': 'y',  # show both traces,
+                                    'rangemode': 'nonnegative'
+                                }
+                            }
+                        },
+                        config=chart_config
+                    )
+
+                ], className='six columns')
+
+            ], className='row'),
+
+            html.Div([  # third chart row
+                html.Div([
+                    dcc.Graph(
+                        id='nuovi-casi-vs-morti',
+                        figure={
+                            'data': [
+                                {'x': df['data'], 'y': df['nuovi_decessi'], 'type': 'bar', 'name': 'Nuovi decessi',
+                                 'yaxis': 'y1', 'marker': dict(color='orange')},
+                                {'x': df['data'], 'y': df['nuovi_positivi'], 'type': 'scatter', 'yaxis': 'y2',
+                                 'line': dict(color='blue'),
+                                 'name': 'Nuovi casi'}
+                            ],
+                            'layout': {
+                                'title': 'Nuovi casi vs decessi',
+                                'xaxis': dict(
+                                    rangeselector=dict(buttons=slider_button),
+                                    rangeslider=dict(visible=True),
+                                    type='date'
+                                ),
+                                'yaxis': {'rangemode': 'nonnegative',
+                                          },
+                                'yaxis2': {
+                                    'side': 'right',
+                                    'overlaying': 'y',  # show both traces,
+                                    'rangemode': 'tozero'
+                                }
+                            }
+                        },
+                        config=chart_config
+                    )
+
+                ], className='twelve columns')
+
+            ], className='row'),
+
+        ], className='ten columns offset-by-one')
+    )
+
+
+app.layout = serve_layout
 
 if __name__ == '__main__':
     app.run_server(debug=True)
