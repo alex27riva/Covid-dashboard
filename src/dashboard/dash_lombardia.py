@@ -70,26 +70,6 @@ df['nuovi_casi_norm'] = df['nuovi_positivi'] * REF_TAMP / df['incr_tamponi']
 
 app.layout = html.Div(  # main div
     html.Div([
-        # html.Div([
-        #     html.Img(
-        #         src='https://leformedelgusto.it/wp-content/uploads/2017/06/Logo-regione-lombardia-patrocinio-le-forme'
-        #             '-del-gusto.png',
-        #         className='three columns',
-        #         style={
-        #             'height': '15%',
-        #             'width': '15%',
-        #             'float': 'right',
-        #             'position': 'relative',
-        #         },
-        #     ),
-        #     html.H1(children='Dashboard Lombardia',
-        #             className='nine columns'),
-        #
-        #     html.Div(children='Situazione Covid-19 in Lombardia',
-        #              className='nine columns')
-        #
-        # ], className='row'),
-
         html.Div([  # andamento contagi, % casi tamponi
             html.Div([
                 dcc.Graph(
