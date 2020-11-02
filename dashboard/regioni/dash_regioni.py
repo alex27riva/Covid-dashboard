@@ -18,11 +18,9 @@ df = pandas.read_csv(url)
 # get a list off all regions
 regions = df['denominazione_regione'].drop_duplicates().tolist()
 
-external_stylesheets = [dbc.themes.BOOTSTRAP]
 plotly_js_minified = ['https://cdn.plot.ly/plotly-basic-latest.min.js']
 
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets,
-                external_scripts=plotly_js_minified,
+app = dash.Dash(__name__, external_scripts=plotly_js_minified,
                 meta_tags=[{'name': 'viewport',
                             'content': 'width=device-width, initial-scale=1.0, maximum-scale=1.2, minimum-scale=0.5'}]
                 )

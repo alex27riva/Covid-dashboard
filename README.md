@@ -11,6 +11,11 @@ To run the project is required:
 - Plotly
 - Dash
 
+## Available dashboards
+1. Italy dashboard
+2. Lombardy dashboard
+3. Italy regions dashboard
+
 ## Italy charts
 
 | Chart n° | Filename                   | Title                                           |
@@ -29,9 +34,6 @@ To run the project is required:
 | 12       | total_hospitalized         | ICU + severe disease                            |
 | 13       | home_isolation             | Home isolation                                  |
 
-## Project status
-
-Work in progress...
 
 ## Data
 
