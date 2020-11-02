@@ -21,6 +21,8 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets,
                             'content': 'width=device-width, initial-scale=0.8, maximum-scale=1.2, minimum-scale=0.5'}])
 app.title = 'Dashboard Italia'
 
+server = app.server
+
 # chart config
 chart_config = {'displaylogo': False,
                 'displayModeBar': False,

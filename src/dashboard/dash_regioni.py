@@ -28,6 +28,8 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets,
                 )
 app.title = 'Dashboard Regioni'
 
+server = app.server
+
 # chart config
 chart_config = {'displaylogo': False,
                 'displayModeBar': False,
@@ -114,12 +116,11 @@ app.layout = html.Div(  # main div
                     figure={},
                     config=chart_config
                 )
-                , width={'size': 6})
+                , width={'size': 12})
         ),
 
         dbc.Row(
             [
-
                 dbc.Col(
                     dcc.Graph(
                         id='totale-ospedalizzati',
@@ -138,7 +139,6 @@ app.layout = html.Div(  # main div
                         }
                     )
                     , width={'size': 6, 'order': 'last'})
-
             ]
         ),
 
@@ -163,7 +163,6 @@ app.layout = html.Div(  # main div
 def update_andamento_contagi(regione):
     reg_df = df.loc[df['denominazione_regione'] == regione]
     local_df = calculate_data(reg_df.copy())
-    local_df['nuovi_positivi_avg'] = local_df['nuovi_positivi'].rolling(7).mean()
     figure = {
         'data': [
             {'x': local_df['data'], 'y': local_df['nuovi_positivi'], 'type': 'bar', 'name': 'Nuovi Casi'},

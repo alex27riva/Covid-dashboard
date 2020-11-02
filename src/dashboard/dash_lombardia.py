@@ -25,6 +25,8 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets,
                 )
 app.title = 'Dashboard Lombardia'
 
+server = app.server
+
 # chart config
 chart_config = {'displaylogo': False,
                 'displayModeBar': False,
