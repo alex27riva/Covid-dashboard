@@ -31,7 +31,8 @@ server = app.server
 # chart config
 chart_config = {'displaylogo': False,
                 'displayModeBar': False,
-                'responsive': True
+                'responsive': True,
+                'staticPlot': True
                 }
 
 # slider buttons
@@ -222,7 +223,7 @@ def update_perc_casi_tamponi(regione):
 @app.callback(
     Output('totale-ospedalizzati', 'figure'),
     [Input('region_select', 'value')])
-def update_perc_casi_tamponi(regione):
+def update_ospedalizzati(regione):
     reg_df = df.loc[df['denominazione_regione'] == regione]
     local_df = calculate_data(reg_df.copy())
     figure = {
@@ -245,7 +246,7 @@ def update_perc_casi_tamponi(regione):
 @app.callback(
     Output('decessi-giornalieri', 'figure'),
     [Input('region_select', 'value')])
-def update_perc_casi_tamponi(regione):
+def update_decessi_giornalieri(regione):
     reg_df = df.loc[df['denominazione_regione'] == regione]
     local_df = calculate_data(reg_df.copy())
     figure = {
@@ -268,7 +269,7 @@ def update_perc_casi_tamponi(regione):
 @app.callback(
     Output('terapia-intensiva', 'figure'),
     [Input('region_select', 'value')])
-def update_perc_casi_tamponi(regione):
+def update_terapia_intensiva(regione):
     reg_df = df.loc[df['denominazione_regione'] == regione]
     local_df = calculate_data(reg_df.copy())
     figure = {

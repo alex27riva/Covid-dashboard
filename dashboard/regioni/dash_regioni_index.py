@@ -1,12 +1,9 @@
 #!/usr/bin/python3
-from datetime import date
 
 import dash
 import dash_bootstrap_components as dbc
-import dash_core_components as dcc
 import dash_html_components as html
 import pandas
-from dash.dependencies import Input, Output
 
 # data URL
 url = 'https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-regioni/dpc-covid19-ita-regioni.csv'
@@ -16,7 +13,7 @@ rows = []
 df = pandas.read_csv(url)
 # get a list off all regions
 regions = df['denominazione_regione'].drop_duplicates().tolist()
-print(regions)
+regions.reverse()
 
 plotly_js_minified = ['https://cdn.plot.ly/plotly-basic-latest.min.js']
 
@@ -40,37 +37,44 @@ def generate_card(region_name):
                 ]
             ),
         ],
-        style={"width": "12rem"},
+        style={"width": "10rem"},
     )
     return card
 
 
 def generate_card_row(left, right):
-    return dbc.Row([
-        dbc.Col(left,
+    if right is not None:
+        return dbc.Row([
+            dbc.Col(generate_card(left),
+                    width=6
+                    ),
+            dbc.Col(
+                generate_card(right),
                 width=6
-                ),
-        dbc.Col(
-            right,
-            width=6
+            )
+
+        ])
+    else:
+        return dbc.Row(
+            dbc.Col(generate_card(left),
+                    width=6
+                    )
         )
 
-    ])
 
+while len(regions) > 1:
+    l = regions.pop()
+    if len(regions) == 1:
+        r = None
+    else:
+        r = regions.pop()
+    rows.append(generate_card_row(l, r))
 
-# regions_iter = iter(regions)
-#
-# while regions > 0:
-#     rows.append(generate_card_row(generate_card(regions[i]), generate_card(regions[i + 1])))
-
-for i in range(0, 20):
-    rows.append(generate_card_row(generate_card(regions[i]), generate_card(regions[i + 1])))
-
-app.layout = html.Div(  # main div
+app.layout = html.Div(
     dbc.Container(
         rows
     )
-)
+, className='mt-5')
 
 if __name__ == '__main__':
     app.run_server(debug=True)
