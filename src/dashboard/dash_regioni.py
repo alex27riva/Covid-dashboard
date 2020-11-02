@@ -2,6 +2,7 @@
 from datetime import date
 
 import dash
+import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 import dash_html_components as html
 import pandas
@@ -15,9 +16,9 @@ REF_TAMP = 9000  # reference value
 # read csv for url
 df = pandas.read_csv(url)
 # get a list off all regions
-regions = df['denominazione_regione'].tolist()
+regions = df['denominazione_regione'].drop_duplicates().tolist()
 
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+external_stylesheets = [dbc.themes.BOOTSTRAP]
 plotly_js_minified = ['https://cdn.plot.ly/plotly-basic-latest.min.js']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets,
@@ -82,9 +83,9 @@ def get_dropdown_data():
 
 
 app.layout = html.Div(  # main div
-    html.Div([
-        html.Div([
-            html.Div([
+    dbc.Container([
+        dbc.Row(
+            dbc.Col(
                 dcc.Dropdown(id='region_select',
                              options=get_dropdown_data(),
                              clearable=False,
@@ -94,66 +95,65 @@ app.layout = html.Div(  # main div
                              value='Lombardia'
                              )
 
-            ], className='four columns offset-by-three')
-        ], className='row'),
-        html.Div([  # andamento contagi
-            html.Div([
+                , width={'size': 4, 'offset': 4})
+        ),
+        dbc.Row(  # andamento contagi
+            dbc.Col(
                 dcc.Graph(
                     id='andamento-contagi',
                     figure={},
                     config=chart_config
                 )
+                , width=12)
+        ),
 
-            ], className='twelve columns')
-
-        ], className='row'),
-
-        html.Div([
-            html.Div([
+        dbc.Row(
+            dbc.Col(
                 dcc.Graph(
                     id='perc-casi-tamponi',
                     figure={},
                     config=chart_config
                 )
+                , width={'size': 6})
+        ),
 
-            ], className='six columns'),
-        ], className='row'),
+        dbc.Row(
+            [
 
-        html.Div([  # second chart row
+                dbc.Col(
+                    dcc.Graph(
+                        id='totale-ospedalizzati',
+                        figure={},
+                        config=chart_config
+                    )
+                    , width={'size': 6, 'order': 'first'}),
+                dbc.Col(
+                    dcc.Graph(
+                        id='decessi-giornalieri',
+                        figure={},
+                        config={
+                            'displaylogo': False,
+                            'displayModeBar': False,
+                            'responsive': True
+                        }
+                    )
+                    , width={'size': 6, 'order': 'last'})
 
-            html.Div([
-                dcc.Graph(
-                    id='totale-ospedalizzati',
-                    figure={},
-                    config=chart_config
-                )
-            ], className='six columns'),
-            html.Div([
-                dcc.Graph(
-                    id='decessi-giornalieri',
-                    figure={},
-                    config={
-                        'displaylogo': False,
-                        'displayModeBar': False,
-                        'responsive': True
-                    }
-                )
-            ], className='six columns'),
+            ]
+        ),
 
-        ], className='row'),
-
-        html.Div([
-            html.Div([
+        dbc.Row(
+            dbc.Col(
                 dcc.Graph(
                     id='terapia-intensiva',
                     figure={},
                     config=chart_config
                 )
-            ], className='twelve columns'),
+                , width=12),
 
-        ], className='row')
+        )
 
-    ], className='ten columns offset-by-one')
+    ])
 )
 
 
