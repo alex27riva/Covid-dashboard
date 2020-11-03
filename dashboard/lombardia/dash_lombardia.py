@@ -4,6 +4,7 @@ from datetime import date
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
+import dash_bootstrap_components as dbc
 import pandas
 
 # data URL
@@ -15,10 +16,9 @@ REF_TAMP = 9000  # reference value
 df = pandas.read_csv(url)
 df = df.loc[df['denominazione_regione'] == 'Lombardia']
 
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 plotly_js_minified = ['https://cdn.plot.ly/plotly-basic-latest.min.js']
 
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets,
+app = dash.Dash(__name__,
                 external_scripts=plotly_js_minified,
                 meta_tags=[{'name': 'viewport',
                             'content': 'width=device-width, initial-scale=1.0, maximum-scale=1.2, minimum-scale=0.5'}]
@@ -71,9 +71,9 @@ df['perc_positivi_test_avg'] = df['perc_positivi_test'].rolling(3).mean()
 df['nuovi_casi_norm'] = df['nuovi_positivi'] * REF_TAMP / df['incr_tamponi']
 
 app.layout = html.Div(  # main div
-    html.Div([
-        html.Div([  # andamento contagi, % casi tamponi
-            html.Div([
+    dbc.Container([
+        dbc.Row(  # andamento contagi, % casi tamponi
+            dbc.Col(
                 dcc.Graph(
                     id='andamento-contagi',
                     figure={
@@ -96,13 +96,11 @@ app.layout = html.Div(  # main div
                     },
                     config=chart_config
                 )
+                , width=12)
+        ),
 
-            ], className='twelve columns')
-
-        ], className='row'),
-
-        html.Div([
-            html.Div([
+        dbc.Row([
+            dbc.Col(
                 dcc.Graph(
                     id='perc-casi-tamponi',
                     figure={
@@ -136,9 +134,8 @@ app.layout = html.Div(  # main div
                     },
                     config=chart_config
                 )
-
-            ], className='six columns'),
-            html.Div([
+                , width=6),
+            dbc.Col(
                 dcc.Graph(
                     id='contagi-norm',
                     figure={
@@ -163,13 +160,12 @@ app.layout = html.Div(  # main div
                     config=chart_config
 
                 )
-            ], className='six columns')
+                , width=6)
 
-        ], className='row'),
+        ]),
 
-        html.Div([  # second chart row
-
-            html.Div([
+        dbc.Row([  # second chart row
+            dbc.Col(
                 dcc.Graph(
                     id='totale-ospedalizzati',
                     figure={
@@ -191,8 +187,8 @@ app.layout = html.Div(  # main div
                     },
                     config=chart_config
                 )
-            ], className='six columns'),
-            html.Div([
+                , width=6),
+            dbc.Col(
                 dcc.Graph(
                     id='decessi-giornalieri',
                     figure={
@@ -218,11 +214,12 @@ app.layout = html.Div(  # main div
                         'responsive': True
                     }
                 )
-            ], className='six columns'),
+                , width=6),
 
-        ], className='row'),
-        html.Div([
-            html.Div([
+        ]),
+
+        dbc.Row(
+            dbc.Col(
                 dcc.Graph(
                     id='Terapia-intensiva',
                     figure={
@@ -244,11 +241,11 @@ app.layout = html.Div(  # main div
                     },
                     config=chart_config
                 )
-            ], className='twelve columns'),
+                , width=12),
 
-        ], className='row')
+        )
 
-    ], className='ten columns offset-by-one')
+    ])
 )
 
 if __name__ == '__main__':
