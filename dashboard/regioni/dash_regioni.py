@@ -31,7 +31,7 @@ server = app.server
 # chart config
 chart_config = {'displaylogo': False,
                 'displayModeBar': False,
-                'responsive': True,
+                # 'responsive': True, # yeah, fixed the error
                 'staticPlot': True
                 }
 
@@ -86,17 +86,27 @@ def get_dropdown_data():
 app.layout = html.Div(  # main div
     dbc.Container([
         dbc.Row(
-            dbc.Col(
-                dcc.Dropdown(id='region_select',
-                             options=get_dropdown_data(),
-                             clearable=False,
-                             placeholder='Seleziona una regione...',
-                             persistence=True,
-                             persistence_type='session',
-                             value='Lombardia'
+            [
+                dbc.Col(
+                    html.Img(id='logo-regione',
+                             alt='Logo',
+                             style=dict(width='30%')
                              )
 
-                , width={'size': 4, 'offset': 4})
+                    , width=4),
+
+                dbc.Col(
+                    dcc.Dropdown(id='region_select',
+                                 options=get_dropdown_data(),
+                                 clearable=False,
+                                 placeholder='Seleziona una regione...',
+                                 persistence=True,
+                                 persistence_type='session',
+                                 value='Lombardia'
+                                 )
+
+                    , width={'size': 4, 'offset': 0})
+            ]
         ),
         dbc.Row(  # andamento contagi
             dbc.Col(
@@ -131,11 +141,7 @@ app.layout = html.Div(  # main div
                     dcc.Graph(
                         id='decessi-giornalieri',
                         figure={},
-                        config={
-                            'displaylogo': False,
-                            'displayModeBar': False,
-                            'responsive': True
-                        }
+                        config=chart_config
                     )
                     , width={'size': 6, 'order': 'last'})
             ]
@@ -152,7 +158,7 @@ app.layout = html.Div(  # main div
 
         )
 
-    ])
+    ], className='mt-5')
 )
 
 
@@ -290,6 +296,14 @@ def update_terapia_intensiva(regione):
         }
     }
     return figure
+
+
+@app.callback(
+    Output('logo-regione', 'src'),
+    [Input('region_select', 'value')])
+def update_logo(regione):
+    src = 'assets/img/' + regione + '.png'
+    return src
 
 
 if __name__ == '__main__':

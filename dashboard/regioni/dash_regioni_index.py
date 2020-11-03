@@ -74,7 +74,7 @@ app.layout = html.Div(
     dbc.Container(
         rows
     )
-, className='mt-5')
+    , className='mt-5')
 
 if __name__ == '__main__':
     app.run_server(debug=True)
