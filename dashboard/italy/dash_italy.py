@@ -2,6 +2,7 @@
 from datetime import date
 
 import dash
+import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 import dash_html_components as html
 import pandas
@@ -12,11 +13,9 @@ url = 'https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-andamento-
 today = date.today()
 df = pandas.read_csv(url)
 
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 plotly_js_minified = ['https://cdn.plot.ly/plotly-basic-latest.min.js']
 
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets,
-                external_scripts=plotly_js_minified,
+app = dash.Dash(__name__, external_scripts=plotly_js_minified,
                 meta_tags=[{'name': 'viewport',
                             'content': 'width=device-width, initial-scale=0.8, maximum-scale=1.2, minimum-scale=0.5'}])
 app.title = 'Dashboard Italia'
@@ -86,9 +85,9 @@ def refresh_data():
 def serve_layout():
     refresh_data()
     return html.Div(  # main div
-        html.Div([
-            html.Div([  # nuovi positivi, casi totali,
-                html.Div([
+        dbc.Container([
+            dbc.Row(
+                dbc.Col(
                     dcc.Graph(
                         id='nuovi_positivi',
                         figure={
@@ -108,8 +107,10 @@ def serve_layout():
 
                     )
 
-                ], className='six columns'),
-                html.Div([
+                )
+            ),
+            dbc.Row(
+                dbc.Col(
                     dcc.Graph(
                         id='Casi-totali',
                         figure={
@@ -127,12 +128,11 @@ def serve_layout():
                         },
                         config=chart_config
                     )
-                ], className='six columns'),
+                )
 
-            ], className='row'),
-
-            html.Div([  # isolamento, terapia intensiva
-                html.Div([
+            ),
+            dbc.Row(
+                dbc.Col(
                     dcc.Graph(
                         id='isolamento-domiciliare',
                         figure={
@@ -151,9 +151,10 @@ def serve_layout():
                         },
                         config=chart_config
                     )
-                ], className='six columns'),
-
-                html.Div([
+                )
+            ),
+            dbc.Row(
+                dbc.Col(
                     dcc.Graph(
                         id='Terapia-intensiva',
                         figure={
@@ -176,12 +177,12 @@ def serve_layout():
                         },
                         config=chart_config
                     )
-                ], className='six columns'),
+                )
 
-            ], className='row'),
+            ),
 
-            html.Div([  # nuovi casi norm / ospedalizzati
-                html.Div([
+            dbc.Row(
+                dbc.Col(
                     dcc.Graph(
                         id='nuovi-casi-norm',
                         figure={
@@ -203,9 +204,11 @@ def serve_layout():
                         config=chart_config
                     )
 
-                ], className='six columns'),
+                )
+            ),
 
-                html.Div([
+            dbc.Row(
+                dbc.Col(
                     dcc.Graph(
                         id='totale-ospedalizzati',
                         figure={
@@ -228,11 +231,11 @@ def serve_layout():
                         },
                         config=chart_config
                     )
-                ], className='six columns')
-            ], className='row'),
+                )
+            ),
 
-            html.Div([  # second chart row
-                html.Div([
+            dbc.Row(
+                dbc.Col(
                     dcc.Graph(
                         id='rapporto-positivi-tamponi',
                         figure={
@@ -268,9 +271,11 @@ def serve_layout():
                         config=chart_config
                     )
 
-                ], className='six columns'),
+                )
+            ),
 
-                html.Div([
+            dbc.Row(
+                dbc.Col(
                     dcc.Graph(
                         id='rapporto-pos-tamponi',
                         figure={
@@ -308,12 +313,12 @@ def serve_layout():
                         config=chart_config
                     )
 
-                ], className='six columns')
+                )
 
-            ], className='row'),
+            ),
 
-            html.Div([  # third chart row
-                html.Div([
+            dbc.Row(
+                dbc.Col(
                     dcc.Graph(
                         id='nuovi-casi-vs-morti',
                         figure={
@@ -343,11 +348,11 @@ def serve_layout():
                         config=chart_config
                     )
 
-                ], className='twelve columns')
+                )
 
-            ], className='row'),
+            )
 
-        ], className='ten columns offset-by-one')
+        ])
     )
 
 
