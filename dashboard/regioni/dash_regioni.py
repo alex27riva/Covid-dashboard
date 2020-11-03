@@ -92,7 +92,7 @@ app.layout = html.Div(  # main div
                              style=dict(width='30%')
                              )
 
-                    , width=4),
+                    , width=12, lg=4),
 
                 dbc.Col(
                     dcc.Dropdown(id='region_select',
@@ -104,9 +104,10 @@ app.layout = html.Div(  # main div
                                  value='Lombardia'
                                  )
 
-                    , width={'size': 4, 'offset': 0})
+                    , width=12, lg=5,
+                    className='mt-2')
             ]
-        ),
+            , className='text-center'),
         dbc.Row(  # andamento contagi
             dbc.Col(
                 dcc.Graph(
