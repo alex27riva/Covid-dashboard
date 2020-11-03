@@ -31,7 +31,6 @@ server = app.server
 # chart config
 chart_config = {'displaylogo': False,
                 'displayModeBar': False,
-                # 'responsive': True, # yeah, fixed the error
                 'staticPlot': True
                 }
 
@@ -125,26 +124,30 @@ app.layout = html.Div(  # main div
                     figure={},
                     config=chart_config
                 )
-                , width={'size': 12})
+                , width=12)
         ),
 
         dbc.Row(
-            [
-                dbc.Col(
-                    dcc.Graph(
-                        id='totale-ospedalizzati',
-                        figure={},
-                        config=chart_config
-                    )
-                    , width={'size': 6, 'order': 'first'}),
-                dbc.Col(
-                    dcc.Graph(
-                        id='decessi-giornalieri',
-                        figure={},
-                        config=chart_config
-                    )
-                    , width={'size': 6, 'order': 'last'})
-            ]
+            dbc.Col(
+                dcc.Graph(
+                    id='totale-ospedalizzati',
+                    figure={},
+                    config=chart_config
+                )
+                , width=12,
+
+            )
+        ),
+
+        dbc.Row(
+            dbc.Col(
+                dcc.Graph(
+                    id='decessi-giornalieri',
+                    figure={},
+                    config=chart_config
+                )
+                , width=12,
+            )
         ),
 
         dbc.Row(
@@ -193,7 +196,6 @@ def update_andamento_contagi(regione):
 def update_perc_casi_tamponi(regione):
     reg_df = df.loc[df['denominazione_regione'] == regione]
     local_df = calculate_data(reg_df.copy())
-
     figure = {
         'data': [
             {'x': local_df['data'], 'y': local_df['perc_positivi_test'], 'type': 'scatter',
