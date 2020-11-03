@@ -88,7 +88,6 @@ app.layout = html.Div(  # main div
             [
                 dbc.Col(
                     html.Img(id='logo-regione',
-                             alt='Logo',
                              style=dict(width='30%')
                              )
 
@@ -99,6 +98,7 @@ app.layout = html.Div(  # main div
                                  options=get_dropdown_data(),
                                  clearable=False,
                                  placeholder='Seleziona una regione...',
+                                 searchable=False,
                                  persistence=True,
                                  persistence_type='session',
                                  value='Lombardia'

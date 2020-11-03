@@ -2,9 +2,9 @@
 from datetime import date
 
 import dash
+import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 import dash_html_components as html
-import dash_bootstrap_components as dbc
 import pandas
 
 # data URL
@@ -72,15 +72,13 @@ df['nuovi_casi_norm'] = df['nuovi_positivi'] * REF_TAMP / df['incr_tamponi']
 
 app.layout = html.Div(  # main div
     dbc.Container([
-        dbc.Row(  # andamento contagi, % casi tamponi
+        dbc.Row(
             dbc.Col(
                 dcc.Graph(
                     id='andamento-contagi',
                     figure={
                         'data': [
-                            {'x': df['data'], 'y': df['nuovi_positivi'], 'type': 'bar', 'name': 'Nuovi Casi',
-                             # 'marker': dict(color='LightSalmon')
-                             },
+                            {'x': df['data'], 'y': df['nuovi_positivi'], 'type': 'bar', 'name': 'Nuovi Casi'},
                             {'x': df['data'], 'y': df['nuovi_positivi_avg'], 'type': 'scatter',
                              'line': dict(color='orange'),
                              'name': 'Media 7 giorni'}
@@ -96,10 +94,10 @@ app.layout = html.Div(  # main div
                     },
                     config=chart_config
                 )
-                , width=12)
+            )
         ),
 
-        dbc.Row([
+        dbc.Row(
             dbc.Col(
                 dcc.Graph(
                     id='perc-casi-tamponi',
@@ -126,7 +124,7 @@ app.layout = html.Div(  # main div
 
                             },
                             'yaxis': {
-                                'range': [0, 30],
+                                'range': [0, 50],
                                 'tickprefix': '% '
                             }
 
@@ -134,7 +132,9 @@ app.layout = html.Div(  # main div
                     },
                     config=chart_config
                 )
-                , width=6),
+            )
+        ),
+        dbc.Row(
             dbc.Col(
                 dcc.Graph(
                     id='contagi-norm',
@@ -160,11 +160,11 @@ app.layout = html.Div(  # main div
                     config=chart_config
 
                 )
-                , width=6)
+            )
 
-        ]),
+        ),
 
-        dbc.Row([  # second chart row
+        dbc.Row(
             dbc.Col(
                 dcc.Graph(
                     id='totale-ospedalizzati',
@@ -187,7 +187,9 @@ app.layout = html.Div(  # main div
                     },
                     config=chart_config
                 )
-                , width=6),
+            )
+        ),
+        dbc.Row(
             dbc.Col(
                 dcc.Graph(
                     id='decessi-giornalieri',
@@ -208,15 +210,11 @@ app.layout = html.Div(  # main div
                             )
                         }
                     },
-                    config={
-                        'displaylogo': False,
-                        'displayModeBar': False,
-                        'responsive': True
-                    }
+                    config=chart_config
                 )
-                , width=6),
+            )
 
-        ]),
+        ),
 
         dbc.Row(
             dbc.Col(
@@ -241,7 +239,7 @@ app.layout = html.Div(  # main div
                     },
                     config=chart_config
                 )
-                , width=12),
+            )
 
         )
 
