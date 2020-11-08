@@ -30,8 +30,7 @@ server = app.server
 
 # chart config
 chart_config = {'displaylogo': False,
-                'displayModeBar': False,
-                'staticPlot': True
+                'displayModeBar': False
                 }
 
 # slider buttons
