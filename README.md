@@ -23,9 +23,9 @@ To run the project is required:
 
 ## Three dashboards available
 
-1. Italy dashboard
-2. Lombardy dashboard
-3. Italy regions dashboard
+- Italy
+- Lombardy
+- Italy regions
 
 ## Data source
 
