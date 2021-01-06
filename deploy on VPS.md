@@ -19,11 +19,21 @@ VPS with a these minimum hardware specification:
 3. Execute the script `sudo sh get-docker.sh`
 4. Run this command to use Docker without root privileges `sudo usermod -aG docker admin
 
-## Build and run container
-1. Clone the repository to the VPS.
-2. `cd` into each dashboard folder
-3. Build the container image `docker build -t <container-name>:latest .`
-4. Run the container `docker run -d -p <ext-port>:8050 <id-container>`
+## Install and run containers
+Run the following commands to install and run the three containers:
+- `docker run -d -p 8050:8050 --name=dashboard_italy alex27riva/dash_italy`
+  
+- `docker run -d -p 8051:8050 --name=dashboad_lomb alex27riva/dashboard_lombardia`
+  
+- `docker run -d -p 8052:8050 --name=dashboard_regioni alex27riva/dashboard_regioni`
+
+## Easy container management
+For an easy container administration you can install Portnainer
+Run these two commands:
+1. `docker volume create portainer_data`
+2.  `docker run -d -p 8000:8000 -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce`
+
+Now you can easily manage your container throughout a web page at http://<ip-address>:9000
 
 ## Container port configuration
 | Name | Internal port | External port |
