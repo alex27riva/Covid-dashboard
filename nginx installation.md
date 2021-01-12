@@ -5,9 +5,9 @@
 1. `apt update`
 2. `apt install nginx`
 3. `unlink /etc/nginx/sites-enabled/default`
-4. sudo nano /etc/nginx/sites-available/reverse-proxy.conf
+4. `sudo nano /etc/nginx/sites-available/reverse-proxy.conf`
 
-Enter the following configuration:
+Copy and paste the following configuration:
 
 ```
 
@@ -18,7 +18,6 @@ server {
         ssl on;
         ssl_certificate /etc/letsencrypt/live/dash.covid19-italy.it/fullchain.pem;
         ssl_certificate_key /etc/letsencrypt/live/dash.covid19-italy.it/privkey.pem;
-```
 
         server_name dash.covid19-italy.it
     
@@ -40,10 +39,12 @@ server {
 
  }
 }
+```
 
 
-
-6. ```
+6. Make a symbolic link: 
+   
+```
    ln -s /etc/nginx/sites-available/reverse-proxy.conf /etc/nginx/sites-enabled/reverse-proxy.conf
    
    ```
@@ -56,7 +57,7 @@ server {
 
 
 
-## Install SSL certfificate
+## Install SSL certificate
 
 
 
@@ -80,4 +81,8 @@ In case of unsuccessful installation, the certificate will be saved in:
 
 ## Final step
 
-Restart Nginx server with 
+Restart Nginx server with the following command
+
+```
+sudo systemctl restart nginx
+```
