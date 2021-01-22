@@ -226,7 +226,7 @@ def update_perc_casi_tamponi(regione):
 
             },
             'yaxis': {
-                'range': [0, 30],
+                'range': [0, 40],
                 'tickprefix': '% '
             }
 
