@@ -17,7 +17,7 @@ VPS with a these minimum hardware specification:
 1. Log in to your VPS with admin account `ssh admin@<vps-ip-address>`
 2. Download the script for Docker `curl -fsSL https://get.docker.com -o get-docker.sh`
 3. Execute the script `sudo sh get-docker.sh`
-4. Run this command to use Docker without root privileges `sudo usermod -aG docker admin
+4. Run this command to use Docker without root privileges `sudo usermod -aG docker admin`
 
 ## Install and run containers
 Run the following commands to install and run the three containers:
