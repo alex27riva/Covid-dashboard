@@ -70,9 +70,9 @@ def refresh_data():
     df['nuovi_casi_norm'] = df['nuovi_positivi'] * REF_TAMP / df['delta_tamponi']
 
     # ratio cases - tests
-    df['delta_casi_testati'] = df.casi_testati.diff().fillna(df.casi_testati)  # U
-    df['tamponi_meno_casi_testati'] = df['tamponi'] - df['casi_testati']  # S
-    df['delta_tamponi_casi'] = df.tamponi_meno_casi_testati.diff().fillna(df.tamponi_meno_casi_testati)  # T
+    df['delta_casi_testati'] = df.casi_testati.diff().fillna(df.casi_testati)
+    df['tamponi_meno_casi_testati'] = df['tamponi'] - df['casi_testati']
+    df['delta_tamponi_casi'] = df.tamponi_meno_casi_testati.diff().fillna(df.tamponi_meno_casi_testati)
     df['rapp_casi_test'] = (df['nuovi_positivi'] / df['delta_casi_testati']) * 100
     df['perc_tamponi_meno_testati'] = (df['nuovi_positivi'] / df['delta_tamponi_casi']) * 100
 
