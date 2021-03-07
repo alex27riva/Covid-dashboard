@@ -136,7 +136,7 @@ def serve_layout():
 
                                 },
                                 'yaxis': {
-                                    'range': [0, 50],
+                                    'range': [0, 65],
                                     'tickprefix': '% '
                                 }
 

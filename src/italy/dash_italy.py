@@ -269,6 +269,12 @@ def serve_layout():
                                     'overlaying': 'y',  # show both traces,
                                     'rangemode': 'nonnegative'
 
+                                },
+                                'legend': {
+                                    'x': 1,
+                                    'xanchor': 'right',
+                                    'yanchor': 'bottom',
+                                    'orientation': 'h'
                                 }
                             }
                         },
@@ -311,6 +317,12 @@ def serve_layout():
                                     'side': 'right',
                                     'overlaying': 'y',  # show both traces,
                                     'rangemode': 'nonnegative'
+                                },
+                                'legend': {
+                                    'x': 1,
+                                    'xanchor': 'right',
+                                    'yanchor': 'top',
+                                    'orientation': 'h'
                                 }
                             }
                         },
@@ -346,6 +358,9 @@ def serve_layout():
                                     'side': 'right',
                                     'overlaying': 'y',  # show both traces,
                                     'rangemode': 'tozero'
+                                },
+                                'legend': {
+                                    'x': 1.04
                                 }
                             }
                         },
