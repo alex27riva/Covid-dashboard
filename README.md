@@ -18,9 +18,9 @@ To run the project is required:
 - Dash Bootstrap Components `$ pip install dash-bootstrap-components`
 
 ## Docker images
-- [Italy](https://hub.docker.com/r/alex27riva/dash_italy)
-- [Lombardy](https://hub.docker.com/r/alex27riva/dashboard_lombardia)
-- [Italy regions](https://hub.docker.com/r/alex27riva/dashboard_regioni)
+- [Italy](https://github.com/alex27riva/docker-dash-italy)
+- [Lombardy](https://github.com/alex27riva/docker-dash-lombardia)
+- [Italy regions](https://github.com/alex27riva/docker-dash-regioni)
 
 ## Data source
 Data is taken from the Department of Italian Civil Protection [GitHub](https://github.com/pcm-dpc/COVID-19)
