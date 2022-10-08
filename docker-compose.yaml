@@ -1,0 +1,24 @@
+services:
+  italy:
+    image: alex27riva/dash_italy:latest
+    build: ../docker-dash-italy
+    container_name: dashboard_italy
+    ports:
+      - "8050:8050"
+    restart: always
+
+  lombardy:
+    image: alex27riva/dash_lombardia:latest
+    build: ../docker-dash-lombardia
+    container_name: dashboard_lombardia
+    ports:
+      - "8051:8050"
+    restart: always
+
+  regions:
+    image: alex27riva/dash_regioni:latest
+    build: ../docker-dash-regioni
+    container_name: dashboard_regioni
+    ports:
+      - "8052:8050"
+    restart: always
